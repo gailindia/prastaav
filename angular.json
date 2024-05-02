@@ -1,3 +1,4 @@
+
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
@@ -35,9 +36,13 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.slim.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+            ],
             "server": "src/main.server.ts",
             "prerender": true,
             "ssr": {
@@ -108,7 +113,6 @@
     }
   },
   "cli": {
-    "analytics": "d22c5e70-5b49-4627-b60a-48cbe66d2b4a"
+    "analytics": "ba5d7699-a4c7-4812-bdc6-6d5e6d6ef204"
   }
 }
-
