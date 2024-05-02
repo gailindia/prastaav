@@ -1,0 +1,26 @@
+<div>
+  <nav class="navbar navbar-expand navbar-dark bg-dark">
+    <a href="#" class="navbar-brand">Home</a>
+    <div class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a routerLink="create" class="nav-link">Create</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="home" class="nav-link">Home</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="cart" class="nav-link">Cart</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="seeAll" class="nav-link">See All</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="logout" class="nav-link">Logout</a>
+      </li>
+    </div>
+  </nav>
+ 
+  <div class="container mt-3">
+    <router-outlet></router-outlet>
+  </div>
+</div>

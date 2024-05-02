@@ -1,0 +1,33 @@
+<html>
+<body>
+
+<div class="submit-form">
+    
+    @if(! Submitted){
+        <div class="form-group" style="width: 400px; padding:40px;margin :0px">
+            <h2>Verify OTP</h2>
+
+            <label for="MobileNo">MobileNo</label>
+            <input type="text" class="form-control" id="MobileNo" value="{{mob}}">
+           
+            <label for="OTP">OTP</label>
+            <input
+              type="text"
+              class="form-control"
+              id="OTP"
+              required
+              [(ngModel)]="login.OTP"
+              name="OTP"
+            />
+            
+            <button (click)="verifyOTP()" class="btn btn-success">Verify</button>
+          </div>
+          
+    } @else {
+   <app-home></app-home>
+    }
+    
+</div>
+
+</body>
+</html>
