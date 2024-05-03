@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(cors({origin:true}));
 
 // const hostname = '192.168.1.107';
-const hostname = '192.168.1.100';
+const hostname = '192.168.1.105';
 const port = 4040;
 
 const con = mysql.createConnection({
@@ -105,7 +105,25 @@ const con = mysql.createConnection({
         res.json(results);
       }
     });
-});
+  });
+
+  // LOGIN API
+app.post('/api/takeservice',async(req, res) => {
+    const { Name, Gender,Age, Profession, Pincode,State,City,Area,Group,GenderS,AgeS,Experience,SpecialNote,DocLink,VideoLink,LocationLink,AnySpecialGroup,Sector,Service,Category,Charges,Charges_paid} = req.body;
+    const dateTimeObject = new Date(); 
+    try {
+      const OTP = Math.floor(100000 + Math.random() * 900000); 
+    Serviceid = "SDK"+ OTP;
+
+      con.query('INSERT INTO servicehdr (Serviceid,Sector,Service,Category,Charges,Charges_paid) VALUES (?,?,?,?)',[Serviceid,Sector,Service,Category,Charges,Charges_paid], (err, result) => {
+        if (err) throw err;
+        res.json({ message: 'Login successfully'});
+      });
+  } catch (error) {
+    res.json({ message: 'Error calling URL:', error}); 
+  }    
+    });
+
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
