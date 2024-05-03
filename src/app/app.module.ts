@@ -15,7 +15,7 @@ import { HomeComponent } from './home/home.component';
     AppComponent,
     LoginComponent,
     VerifyOTPComponent,
-    HomeComponent
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,4 +28,5 @@ import { HomeComponent } from './home/home.component';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

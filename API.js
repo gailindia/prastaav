@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(cors({origin:true}));
 
 // const hostname = '192.168.1.107';
-const hostname = '192.168.1.100';
+const hostname = '192.168.1.101';
 const port = 4040;
 
 const con = mysql.createConnection({
