@@ -25,7 +25,7 @@ const con = mysql.createConnection({
 
     //GET API for GROUP
     app.get('/api/data', (req, res) => {
-        const query = 'SELECT * FROM mobilelogin';
+        const query = 'SELECT * FROM services';
       
         // Execute the query
         con.query(query, (error, results) => {
@@ -93,7 +93,19 @@ const con = mysql.createConnection({
     })     
   });
 
+  //GET API for GROUP
+  app.get('/api/services', (req, res) => {
+    const query = 'SELECT * FROM SERVICES';
 
+    // Execute the query
+    con.query(query, (error, results) => {
+      if (error) {
+        res.status(500).send(error);
+      } else {
+        res.json(results);
+      }
+    });
+});
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });

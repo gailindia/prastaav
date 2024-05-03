@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { Login } from "../models/login.model";
 
 const baseUrl = 'http://192.168.1.100:4040/api';
+const pincodeUrl = 'https://api.postalpincode.in/pincode';
 @Injectable({
     providedIn: `root`,
 })
@@ -17,4 +18,13 @@ export class LoginService{
     verifyOTP(data:any):Observable<any>{
         return this.http.post(`${baseUrl}/VerifyOTP`,data);
     }
+
+    getAreaAndCity(pincode:String):Observable<any>{
+        return this.http.get(`${pincodeUrl}/${pincode}`);
+    }
+
+    getServices():Observable<any>{
+        return this.http.get(`${baseUrl}/services`);
+    }
+
 }

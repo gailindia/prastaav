@@ -1,0 +1,44 @@
+<html>
+<body>
+
+<div class="submit-form">
+    
+    <!-- @if(! work){ -->
+        <div class="form-group" style="width: 400px; padding:40px;margin :0px">
+       
+
+            <label for="Pincode">Pincode</label>
+            <input type="text" [(ngModel)]="take.Pincode" (input)= "onPincodeChange()" placeholder="Enter Pincode" id="MobileNo" >
+            
+            <div *ngIf="take.Area && take.City">
+               
+              <label for="City">City</label>
+              <input type="text" class="form-control" id="City" value="{{take.City}}">
+
+              <label for="Area">Area</label>
+              <input type="text" class="form-control" id="Area" value="{{take.Area}}">
+
+              <label for="State">State</label>
+              <input type="text" class="form-control" id="State" value="{{take.State}}">
+
+            </div>
+
+
+            <div class="col-lg-6">
+              <select name="Service"class="form-control"><option>-- Select Services --</option>
+                <option [value]="serv.Category" *ngFor="let serv of serviceList">{{serv.Category}}</option></select>
+            </div>
+
+            <!-- <label for="State">State</label>
+            <input type="text" class="form-control" id="State" value="{{take.Pincode}}"> -->
+            
+          </div>
+          
+    <!-- } @else {
+   <app-home></app-home>
+    } -->
+    
+</div>
+
+</body>
+</html>

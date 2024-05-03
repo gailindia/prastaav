@@ -8,14 +8,24 @@ import { LoginService } from '../Services/Login.services';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+
+
+
+
 login: Login = {
   MobileNo: ''
 };
 
 Submitted = false;
 
+
 constructor(private loginService : LoginService){
 }
+// ngOnInit(){
+//   localStorage.setItem("isLoggedIn","false");
+// }
+// isLoggedIn =  `${localStorage.getItem("isLoggedIn")}`;
+
 
 sendOTP() : void{
   const data = {
@@ -32,6 +42,7 @@ sendOTP() : void{
     },
     error: (e) => console.error(e)
   });
+  
 
 }
 
