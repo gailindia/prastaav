@@ -6,6 +6,7 @@ import { HomeComponent } from './home/home.component';
 import { CreateComponent } from './create/create.component';
 import { CartComponent } from './cart/cart.component';
 import { SeeallComponent } from './seeall/seeall.component';
+import { HomeScreenComponent } from './home-screen/home-screen.component';
 
 const routes: Routes = [
   {path: '', redirectTo : 'Login', pathMatch : 'full'},
@@ -14,7 +15,8 @@ const routes: Routes = [
   {path: 'Home', component: HomeComponent},
   {path: 'create', component: CreateComponent},
   {path: 'seeAll', component: SeeallComponent},
-  {path: 'cart', component: CartComponent}
+  {path: 'cart', component: CartComponent},
+  {path: 'homeScreen', component: HomeScreenComponent}
 ];
 
 @NgModule({

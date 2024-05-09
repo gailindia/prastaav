@@ -12,6 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { CreateComponent } from './create/create.component';
 import { CartComponent } from './cart/cart.component';
 import { SeeallComponent } from './seeall/seeall.component';
+import { HomeScreenComponent } from './home-screen/home-screen.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { SeeallComponent } from './seeall/seeall.component';
     HomeComponent,
     CreateComponent,
     CartComponent,
-    SeeallComponent
+    SeeallComponent,
+    HomeScreenComponent
   ],
   imports: [
     BrowserModule,

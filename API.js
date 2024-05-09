@@ -3,6 +3,7 @@ const mysql = require('mysql2');
 const bodyParser = require("body-parser");
 const axios = require('axios');
 const cors = require("cors");
+const date = require('date-and-time');
 
 const app = express();
 app.use(express.json());
@@ -10,7 +11,7 @@ app.use(bodyParser.json());
 app.use(cors({origin:true}));
 
 // const hostname = '192.168.1.107';
-const hostname = '192.168.1.105';
+const hostname = '192.168.1.102';
 const port = 4040;
 
 const con = mysql.createConnection({
@@ -96,7 +97,6 @@ const con = mysql.createConnection({
   //GET API for GROUP
   app.get('/api/services', (req, res) => {
     const query = 'SELECT * FROM SERVICES';
-
     // Execute the query
     con.query(query, (error, results) => {
       if (error) {
@@ -108,21 +108,80 @@ const con = mysql.createConnection({
   });
 
   // LOGIN API
-app.post('/api/takeservice',async(req, res) => {
-    const { Name, Gender,Age, Profession, Pincode,State,City,Area,Group,GenderS,AgeS,Experience,SpecialNote,DocLink,VideoLink,LocationLink,AnySpecialGroup,Sector,Service,Category,Charges,Charges_paid} = req.body;
-    const dateTimeObject = new Date(); 
-    try {
-      const OTP = Math.floor(100000 + Math.random() * 900000); 
-    Serviceid = "SDK"+ OTP;
+  app.post('/api/takeservice',async(req, res) => {
+      const { Name, Gender,Age, Profession, Pincode,State,City,Area,Group,GenderS,AgeS,Experience,SpecialNote,DocLink,VideoLink,LocationLink,AnySpecialGroup,Category,Charges_paid, MobileNo} = req.body;
+      const dateTimeObject = new Date(); 
+      try {
+        const OTP = Math.floor(100000 + Math.random() * 900000);
+        const currentDate = new Date(); 
+        const currentYear = currentDate.getFullYear();
+        const currentHour = currentDate.getHours();
+        const currentMonth = currentDate.getMonth() + 1;
+        const currentMinute = currentDate.getMinutes();
+        const currentDay = currentDate.getDate();
+        const lastThreeDigits = MobileNo.slice(-3);
+        const currentSecond = currentDate.getSeconds();
+      
+        const till_date = date.addDays(dateTimeObject,30)
 
-      con.query('INSERT INTO servicehdr (Serviceid,Sector,Service,Category,Charges,Charges_paid) VALUES (?,?,?,?)',[Serviceid,Sector,Service,Category,Charges,Charges_paid], (err, result) => {
-        if (err) throw err;
-        res.json({ message: 'Login successfully'});
+        console.log(till_date);
+
+      Serviceid = "SDK"+ currentYear + currentHour + currentMonth + currentMinute + currentDay + lastThreeDigits + currentSecond;
+      console.log(Serviceid);
+
+      con.query('select * from services where Category =  ?',[Category], (error, result) => {
+        if (error) {
+          throw error;
+        } else {
+          if(result.length == "1")
+          {
+            Sector = result[0]['Sector'];
+            Service = result[0]['Service'];
+            Charges = result[0]['ChargePerDay'];
+
+
+          con.query('INSERT INTO servicehdr (Serviceid,Sector,Service,Category,Charges,Charges_paid,Created_On,Valid_till,S_Status) VALUES (?,?,?,?,?,?,?,?,?)',[Serviceid,Sector,Service,Category,Charges,Charges_paid,dateTimeObject,till_date,"Save" ], (err, result) => {
+          if (err) throw err;
+          else{
+            
+            con.query('INSERT INTO servicedtl (Serviceid,S_Name,Gender,Country,State,City,Area,Pincode) VALUES (?,?,?,?,?,?,?,?)',[Serviceid,Name,Gender,"INDIA",State,City,Area,Pincode ], (err, result) => {
+              if (err) throw err;
+            res.json({ message: 'Inserted successfully'});
+            });
+
+          }   
+        });
+
+
+          }
+        }
       });
-  } catch (error) {
-    res.json({ message: 'Error calling URL:', error}); 
-  }    
+            
+
+
+
+
+
+
+
+     
+    } catch (error) {
+      res.json({ message: 'Error calling URL:', error}); 
+    }    
+  });
+ 
+   //GET API for GROUP
+   app.get('/api/getallservices', (req, res) => {
+    const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid';
+    // Execute the query
+    con.query(query, (error, results) => {
+      if (error) {
+        res.status(500).send(error);
+      } else {
+        res.json(results);
+      }
     });
+  });
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);

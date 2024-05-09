@@ -3,7 +3,7 @@
 
 <div class="submit-form">
     
-    <!-- @if(! work){ -->
+    @if(! onTakeServiceSubmit){
         <div class="form-group" style="width: 400px; padding:40px;margin :0px">
        
           <!-- <div class="container"> -->
@@ -40,7 +40,7 @@
             </div>
 
             <label for="Service">Service</label>
-              <select name="Service"class="form-control">
+              <select name="Service"class="form-control" #teams (change) = "onSelected(teams.value)">
                 <option>-- Select Services --</option>
                 <option [value]="serv.Category" *ngFor="let serv of serviceList">{{serv.Category}}</option>
               </select>  
@@ -61,15 +61,15 @@
             <label for="AnySpecialGroup">Any Special Group</label>
             <input type="text" class="form-control" id="AnySpecialGroup" required [(ngModel)]="take.AnySpecialGroup" name="AnySpecialGroup"/>
 
-            <button  class="btn btn-success">Submit</button>
+            <button (click)="onSubmitTakeService()"   class="btn btn-success">Submit</button>
 
           <!-- </div> -->
  
           </div>
           
-    <!-- } @else {
-   <app-home></app-home>
-    } -->
+    } @else {
+      <h4>Service Submitted Successfully !!</h4>
+    }
     
 </div>
 

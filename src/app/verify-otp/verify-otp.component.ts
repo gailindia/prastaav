@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Login } from '../models/login.model';
 import { LoginService } from '../Services/Login.services';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-verify-otp',
@@ -15,7 +16,10 @@ OTP : ''
 
 Submitted = false;
 
-constructor(private loginService : LoginService){}
+constructor(private loginService : LoginService,private router: Router){
+  
+}
+
 
 
 mob =  `${localStorage.getItem("MobileNo")}`;
@@ -31,7 +35,9 @@ verifyOTP() : void{
       
       console.log('OTP Verified Successfully');
       this.Submitted = true;
-      localStorage.setItem("IsLoogedIn",'true')
+      localStorage.setItem("IsLoogedIn",'true');
+     this.router.navigate([`homeScreen`]);
+      
     },
     error: (e) => console.error(e)
   });

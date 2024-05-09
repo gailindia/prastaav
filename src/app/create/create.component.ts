@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Take, services } from '../models/take.model';
 import { LoginService } from '../Services/Login.services';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-create',
@@ -10,6 +11,7 @@ import { LoginService } from '../Services/Login.services';
 export class CreateComponent {
 
   work = false;
+  onTakeServiceSubmit = false;
 
   serviceList:any;
 
@@ -17,7 +19,23 @@ export class CreateComponent {
     Pincode : '',
     State:'',
     City:'',
-    Area:''
+    Area:'',
+    Name:'',
+    Gender :'',
+    Age:'',
+    Profession:'',
+    Group:'',
+    GenderS:'',
+    AgeS:'',
+    Experience:'',
+    SpecialNote:'',
+    DocLink:'',
+    VideoLink:'',
+    LocationLink:'',
+    AnySpecialGroup :'',  
+    Category: '',
+    Charges_paid:0,
+    MobileNo:localStorage.getItem("MobileNo")??""
   }
    
   constructor(private loginServices : LoginService){}
@@ -46,9 +64,23 @@ export class CreateComponent {
       next:(res)=>{
         this.serviceList = res;
       }
-      
-      //console.log(this.services);
     })  
+  }
+
+  selectedTeam = '';
+  onSelected(value:string): void {this.selectedTeam = value;}
+
+  onSubmitTakeService(){
+    
+    this.take.Category = this.selectedTeam;
+    console.log(this.take);
+    this.loginServices.postTakeServiceForm(this.take).subscribe({
+      next:(res) => {
+        // console.log('Take service', res);
+        this.onTakeServiceSubmit = true;
+      },
+      error: (e) => console.error(e)
+    });
   }
 
 

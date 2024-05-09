@@ -6,6 +6,9 @@ import { Component } from '@angular/core';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  
-    // isLoggedIn = localStorage.getItem("IsLoogedIn");
+  isLoggedIn :any;
+    ngOnIt(){
+      this.isLoggedIn = localStorage.getItem("IsLoogedIn");
+    }
+
 }

@@ -2,7 +2,9 @@
   <!-- @if (isLoggedIn=='true') { -->
     <div>
       <nav class="navbar navbar-expand navbar-dark bg-dark">
-        <a href="#" class="navbar-brand">Home</a>
+        <!-- <a href="#" class="navbar-brand">Home</a> -->
+        <a routerLink="/homeScreen" class="navbar-brand">Home</a>
+            
         <div class="navbar-nav mr-auto">
           <li class="nav-item">
             <a routerLink="/create" class="nav-link">Create</a>
@@ -23,6 +25,7 @@
         <router-outlet></router-outlet>
         <router-outlet name="create"></router-outlet>
         <router-outlet name="seeAll"></router-outlet>
+        <router-outlet name="homeScreen"></router-outlet>
        
       </div>
     </div>
