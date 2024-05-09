@@ -31,6 +31,7 @@ verifyOTP() : void{
       
       console.log('OTP Verified Successfully');
       this.Submitted = true;
+      localStorage.setItem("IsLoogedIn",'true')
     },
     error: (e) => console.error(e)
   });

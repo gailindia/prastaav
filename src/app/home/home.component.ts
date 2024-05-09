@@ -16,5 +16,8 @@ export class HomeComponent {
     // For example, navigate to the "create" route
     this.router.navigate(['create']);
   }
+  
+ 
+    // isLoggedIn = localStorage.getItem("IsLoogedIn");
 
 }

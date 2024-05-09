@@ -1,26 +1,79 @@
 <div>
-  <nav class="navbar navbar-expand navbar-dark bg-dark">
-    <a href="#" class="navbar-brand">Home</a>
-    <div class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a routerLink="create" class="nav-link" (click)="onCreateClicked()">Create</a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="home" class="nav-link">Home</a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="cart" class="nav-link">Cart</a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="seeAll" class="nav-link">See All</a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="logout" class="nav-link">Logout</a>
-      </li>
-    </div>
-  </nav>
  
-  <div class="container mt-3">
-    <router-outlet></router-outlet>
+
+  <!-- @if (isLoggedIn=='true') { -->
+    <div>
+      <nav class="navbar navbar-expand navbar-dark bg-dark">
+        <a href="#" class="navbar-brand">Home</a>
+        <div class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a routerLink="/create" class="nav-link">Create</a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/cart" class="nav-link">Cart</a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/seeAll" class="nav-link">See All</a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/logout" class="nav-link">Logout</a>
+          </li>
+        </div>
+      </nav>
+
+      <div class="container mt-3">
+        <router-outlet></router-outlet>
+        <router-outlet name="create"></router-outlet>
+        <router-outlet name="seeAll"></router-outlet>
+        <H3>HELLO </H3>
+      </div>
+    </div>
+  <!-- }@else {
+    <app-login></app-login>
+  } -->
+
+
+<div class="slideshow-container">
+
+  <!-- Full-width images with number and caption text -->
+  <div class="mySlides fade">
+    <div class="numbertext">1 / 4</div>
+    <img src="../../assets/img_lights_wide.jpg" style="width:100%">
+    <div class="text">Caption Text</div>
   </div>
+
+  <div class="mySlides fade">
+    <div class="numbertext">2 / 4</div>
+    <img src="../../assets/img_snow_wide.jpg" style="width:100%">
+    <div class="text">Caption Two</div>
+  </div>
+
+  <div class="mySlides fade">
+    <div class="numbertext">3 / 4</div>
+    <img src="../../assets/img_mountains_wide.jpg" style="width:100%">
+    <div class="text">Caption Three</div>
+  </div>
+  <div class="mySlides fade">
+    <div class="numbertext">4 / 4</div>
+    <img src="../../assets/img_nature_wide.jpg" alt="">
+    <!-- <img src="../assets/img_snow_wide.jpg" style="width:100%"> -->
+    <div class="text">Caption Three</div>
+  </div>
+
+  <!-- Next and previous buttons -->
+  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+  <a class="next" onclick="plusSlides(1)">&#10095;</a>
 </div>
+<br>
+
+<!-- The dots/circles -->
+<div style="text-align:center">
+  <span class="dot" onclick="currentSlide(1)"></span> 
+  <span class="dot" onclick="currentSlide(2)"></span> 
+  <span class="dot" onclick="currentSlide(3)"></span> 
+  <span class="dot" onclick="currentSlide(4)"></span> 
+</div>
+
+</div>
+
+
