@@ -7,6 +7,10 @@ import { Router } from '@angular/router';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+  isLoggedIn :any;
+    ngOnIt(){
+      this.isLoggedIn = localStorage.getItem("IsLoogedIn");
+    }
 
   constructor(private router: Router) {}
 

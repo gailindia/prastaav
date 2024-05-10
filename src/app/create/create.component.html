@@ -3,13 +3,30 @@
 
 <div class="submit-form">
     
-    <!-- @if(! work){ -->
+
+    @if(! onTakeServiceSubmit){
         <div class="form-group" style="width: 400px; padding:40px;margin :0px">
        
+          <!-- <div class="container"> -->
 
-            <label for="Pincode">Pincode</label>
+            <label for="Name">Name</label>
+            <input type="text" class="form-control" id="Name" required [(ngModel)]="take.Name" name="Name"/>
+        
+            <label for="Gender">Gender</label>
+            <input type="text" class="form-control" id="Gender" required [(ngModel)]="take.Gender" name="Gender"/>
+
+            <label for="Age">Age</label>
+            <input type="text" class="form-control" id="Age" required [(ngModel)]="take.Age" name="Age"/>
+
+            <label for="Profession">Profession</label>
+            <input type="text" class="form-control" id="Profession" required [(ngModel)]="take.Profession" name="Profession"/>
+
+            <label for="Country">Country</label>
+            <input type="text" class="form-control" id="Country" value="INDIA" name="Profession"/>
+
+            <label for="Pincode" >Pincode</label>
             <input type="text" [(ngModel)]="take.Pincode" (input)= "onPincodeChange()" placeholder="Enter Pincode" id="MobileNo" >
-            
+          
             <div *ngIf="take.Area && take.City">
                
               <label for="City">City</label>
@@ -23,20 +40,38 @@
 
             </div>
 
+            <label for="Service">Service</label>
+              <select name="Service"class="form-control" #teams (change) = "onSelected(teams.value)">
+                <option>-- Select Services --</option>
+                <option [value]="serv.Category" *ngFor="let serv of serviceList">{{serv.Category}}</option>
+              </select>  
 
-            <div class="col-lg-6">
-              <select name="Service"class="form-control"><option>-- Select Services --</option>
-                <option [value]="serv.Category" *ngFor="let serv of serviceList">{{serv.Category}}</option></select>
-            </div>
+              
+            <label for="SpecialNote">Special Note</label>
+            <input type="text" class="form-control" id="SpecialNote" required [(ngModel)]="take.SpecialNote" name="SpecialNote"/>
 
-            <!-- <label for="State">State</label>
-            <input type="text" class="form-control" id="State" value="{{take.Pincode}}"> -->
-            
+            <label for="DocLink">Doc Link</label>
+            <input type="text" class="form-control" id="DocLink" required [(ngModel)]="take.DocLink" name="DocLink"/>
+
+            <label for="VideoLink">Video Link</label>
+            <input type="text" class="form-control" id="VideoLink" required [(ngModel)]="take.VideoLink" name="VideoLink"/>
+
+            <label for="LocationLink">Location Link</label>
+            <input type="text" class="form-control" id="LocationLink" required [(ngModel)]="take.LocationLink" name="LocationLink"/>
+
+            <label for="AnySpecialGroup">Any Special Group</label>
+            <input type="text" class="form-control" id="AnySpecialGroup" required [(ngModel)]="take.AnySpecialGroup" name="AnySpecialGroup"/>
+
+            <button (click)="onSubmitTakeService()"   class="btn btn-success">Submit</button>
+
+          <!-- </div> -->
+ 
           </div>
           
-    <!-- } @else {
-   <app-home></app-home>
-    } -->
+    } @else {
+      <h4>Service Submitted Successfully !!</h4>
+    }
+
     
 </div>
 

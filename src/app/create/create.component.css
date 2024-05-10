@@ -1,0 +1,16 @@
+span {
+    display: table-cell;
+    padding: 0 4px 0 6px;
+}
+.container {
+    display: table;
+    width: 100%
+}
+
+input {
+    padding: 3px;
+    box-shadow: 3px 3px 5px grey;
+    font-size: 14px;
+    font-weight: 600;
+    width: 300px;
+  }

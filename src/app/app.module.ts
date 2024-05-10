@@ -9,6 +9,10 @@ import { provideHttpClient, withFetch } from "@angular/common/http";
 import { FormsModule } from '@angular/forms';
 import { VerifyOTPComponent } from './verify-otp/verify-otp.component';
 import { HomeComponent } from './home/home.component';
+import { CreateComponent } from './create/create.component';
+import { CartComponent } from './cart/cart.component';
+import { SeeallComponent } from './seeall/seeall.component';
+import { HomeScreenComponent } from './home-screen/home-screen.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +20,10 @@ import { HomeComponent } from './home/home.component';
     LoginComponent,
     VerifyOTPComponent,
     HomeComponent,
+    CreateComponent,
+    CartComponent,
+    SeeallComponent,
+    HomeScreenComponent
   ],
   imports: [
     BrowserModule,
@@ -28,5 +36,7 @@ import { HomeComponent } from './home/home.component';
   ],
   bootstrap: [AppComponent]
 })
+
 export class AppModule {
 }
+

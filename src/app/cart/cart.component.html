@@ -1,0 +1,28 @@
+<html lang="en">
+<body>
+
+<div class="container mt-3">
+  <h2>Cart</h2>
+  <ul class="list-group">
+    @for (ca of cartList; track ca.Serviceid; let i = $index) {
+    <li class="list-group-item" style="width: 25rem; margin-bottom: 30px;  float: left; ">
+      <!-- {{ ca.Category }} -->
+      <h5 class="card-title">{{ ca.Category }}</h5>
+      <p class="card-text">Name : {{ ca.S_Name }}</p>
+      <p class="card-text">Gender: {{ ca.Gender }}</p>
+      <p class="card-text">State: {{ ca.State }}</p>
+      <p class="card-text">City: {{ ca.City }}</p>  
+      <p class="card-text">Charges: {{ ca.Charges }}</p> 
+      <button  class="btn btn-success">Edit</button>&nbsp;
+      <button  class="btn btn-success">Pay To Verify</button>&nbsp;
+      <button  class="btn btn-success">Delete</button>
+
+    </li>
+    }
+  </ul>
+
+</div>
+
+</body>
+</html>
+

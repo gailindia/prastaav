@@ -16,6 +16,9 @@ export class Take {
     VideoLink?:string;
     LocationLink?:string;
     AnySpecialGroup?:string;
+    Category?:string;
+    Charges_paid?:number;
+    MobileNo?:string;
     }
 
     export class services{
@@ -24,4 +27,16 @@ export class Take {
         Category?:String;
         CodeName?:String;
         ChargePerDay? : Number;
+    }
+
+    export class GetCart{
+        Serviceid?:String;
+        Category?:String;
+        Charges?:number;
+        S_Name?:String;
+        Gender?:String;
+        State?: String;
+        City?:String;
+        Area?:String;
+        Pincode?:String;
     }
