@@ -19,9 +19,6 @@ Submitted = false;
 constructor(private loginService : LoginService,private router: Router){
   
 }
-
-
-
 mob =  `${localStorage.getItem("MobileNo")}`;
 
 verifyOTP() : void{

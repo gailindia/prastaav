@@ -8,6 +8,7 @@ import { CartComponent } from './cart/cart.component';
 import { SeeallComponent } from './seeall/seeall.component';
 import { HomeScreenComponent } from './home-screen/home-screen.component';
 import { AdminComponent } from './admin/admin.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
 
 const routes: Routes = [
   {path: '', redirectTo : 'Login', pathMatch : 'full'},
