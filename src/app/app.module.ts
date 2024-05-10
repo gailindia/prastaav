@@ -13,6 +13,7 @@ import { CreateComponent } from './create/create.component';
 import { CartComponent } from './cart/cart.component';
 import { SeeallComponent } from './seeall/seeall.component';
 import { HomeScreenComponent } from './home-screen/home-screen.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { HomeScreenComponent } from './home-screen/home-screen.component';
     CreateComponent,
     CartComponent,
     SeeallComponent,
-    HomeScreenComponent
+    HomeScreenComponent,
+    AdminLoginComponent
   ],
   imports: [
     BrowserModule,

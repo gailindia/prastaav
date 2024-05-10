@@ -10,8 +10,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(cors({origin:true}));
 
-// const hostname = '192.168.1.107';
-const hostname = '192.168.1.102';
+const hostname = '192.168.1.105';
 const port = 4040;
 
 const con = mysql.createConnection({
@@ -37,7 +36,6 @@ const con = mysql.createConnection({
           }
         });
     });
-  
 
   // LOGIN API
     app.post('/api/Login',async(req, res) => {
@@ -96,15 +94,15 @@ const con = mysql.createConnection({
 
   //GET API for GROUP
   app.get('/api/services', (req, res) => {
-    const query = 'SELECT * FROM SERVICES';
-    // Execute the query
-    con.query(query, (error, results) => {
-      if (error) {
-        res.status(500).send(error);
-      } else {
-        res.json(results);
-      }
-    });
+    const { service} = req.body;
+        // Execute the query
+        con.query('select * from services where service =  ?',[service], (error, results) => {
+          if (error) {
+            res.status(500).send(error);
+          } else {
+            res.json(results);
+          }
+        });
   });
 
   // LOGIN API
@@ -171,7 +169,7 @@ const con = mysql.createConnection({
   });
  
    //GET API for GROUP
-   app.get('/api/getallservices', (req, res) => {
+  app.get('/api/getallservices', (req, res) => {
     const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid';
     // Execute the query
     con.query(query, (error, results) => {
@@ -182,6 +180,102 @@ const con = mysql.createConnection({
       }
     });
   });
+
+  //GET API for TAKE service in sell all
+  app.get('/api/getTakeServiceDet', (req, res) => {
+    const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid where servicehdr.Service ="Take" ';
+    // Execute the query
+    con.query(query, (error, results) => {
+      if (error) {
+        res.status(500).send(error);
+      } else {
+        res.json(results);
+      }
+    });
+  });
+
+   //GET API for GIVE service in sell all
+   app.get('/api/getGiveServiceDet', (req, res) => {
+    const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid where servicehdr.Service ="Give" ';
+    // Execute the query
+    con.query(query, (error, results) => {
+      if (error) {
+        res.status(500).send(error);
+      } else {
+        res.json(results);
+      }
+    });
+  });
+
+
+
+
+
+
+
+
+
+
+//ADMIN APIs
+
+// ADMIN LOGIN API
+  app.post('/api/AdminLogin',async(req, res) => {
+    const { MobileNo} = req.body;
+    const dateTimeObject = new Date(); 
+    const OTP = Math.floor(100000 + Math.random() * 900000); 
+    const message = 'One time password (OTP) is ' + OTP + ' for verification in Service APP. Do not share OTP for security reasons.';
+    const encodedString = encodeURIComponent(message);
+
+    try {
+      const url = 'https://www.buckfy.in/api/mt/SendSMS?user=gailintr&password=Gail@123&senderid=GAILIN&channel=Trans&DCS=0&flashsms=0&number='+MobileNo+'&text='+ encodedString +'&route=04'; //Replace this with the URL you want to call
+      const response = await axios.get(url);
+
+      con.query('select * from AdminLogin where Mobile =  ?',[MobileNo], (error, result) => {
+        if (error) {
+          throw error;
+        } else {
+          if(result.length == "1")
+          {     
+            con.query('update AdminLogin set OTP=?,Verified_ON = ?,Created_On =? where Mobile = ? ',[OTP,dateTimeObject,dateTimeObject,MobileNo], (err, result) => {
+              if (err) throw err;
+              res.json({ success: true, message: 'OTP sent successfully!' });
+            });
+          }else{
+            res.json({ message: 'You ar not an Admin!'});
+            // con.query('INSERT INTO AdminLogin (Mobile,OTP,Verified_on,Created_On, Closed_on,Closing_remarks) VALUES (?,?,?,?,?,?)',[MobileNo,OTP,dateTimeObject,dateTimeObject,dateTimeObject,""], (err, result) => {
+            //   if (err) throw err;
+            //   res.json({ message: 'Login successfully'});
+            // });
+          }      
+        }
+      }) 
+  } catch (error) {
+    res.json({ message: 'Error calling URL:', error}); 
+  }    
+    });
+
+ // VERIFY OTP
+ app.post('/api/AdminVerifyOTP', (req,res) => {
+  const { MobileNo,OTP} = req.body;
+
+  con.query('select OTP from AdminLogin where Mobile =  ?',[MobileNo], (error, rows, result) => {
+    if (error) {
+      throw error;
+    } else {  
+     
+      if(OTP == rows[0].OTP)
+      {
+        res.json({ success: true, message: 'OTP Verified' });
+      }else{
+        res.json({ message: 'Invalid OTP'});
+      }      
+    }
+  })     
+});
+
+
+
+
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
