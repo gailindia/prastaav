@@ -36,5 +36,6 @@ export class LoginService{
     getServicesCart():Observable<any>{
         return this.http.get(`${baseUrl}/getallservices`);
     }
+    
 
 }
