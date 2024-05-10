@@ -16,7 +16,6 @@ login: Login = {
 
 Submitted = false;
 
-
 constructor(private loginService : LoginService){
 }
 // ngOnInit(){
@@ -29,17 +28,18 @@ sendOTP() : void{
   const data = {
     MobileNo : this.login.MobileNo,
   };
+  this.Submitted = true;
+  console.log(data);
+  // this.loginService.sendOTP(data).subscribe({
+  //   next: (res) => {
+  //     console.log('Login service', this.login.MobileNo);
+  //     this.Submitted = true;
 
-  this.loginService.sendOTP(data).subscribe({
-    next: (res) => {
-      console.log('Login service', this.login.MobileNo);
-      this.Submitted = true;
-
-      localStorage.setItem('MobileNo', `${this.login.MobileNo}`);
-      // this.loggedIn = true;
-    },
-    error: (e) => console.error(e)
-  });
+  //     localStorage.setItem('MobileNo', `${this.login.MobileNo}`);
+  //     // this.loggedIn = true;
+  //   },
+  //   error: (e) => console.error(e)
+  // });
   
 
 }

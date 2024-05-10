@@ -12,9 +12,11 @@
       <p class="card-text">State: {{ ca.State }}</p>
       <p class="card-text">City: {{ ca.City }}</p>  
       <p class="card-text">Charges: {{ ca.Charges }}</p> 
-      <button class="btn btn-success">Edit</button>&nbsp;
-      <button class="btn btn-success">Pay To Verify</button>&nbsp;
-      <button class="btn btn-success">Delete</button>
+
+      <button  class="btn btn-success" (click)="onClickEditFromCart(ca.Serviceid)">Edit</button>&nbsp;
+      <button  class="btn btn-success">Pay To Verify</button>&nbsp;
+      <button  class="btn btn-success" (click)="onClickOnDelete(ca.Serviceid)">Delete</button>
+
 
     </li>
     }
