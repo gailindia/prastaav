@@ -1,0 +1,17 @@
+.horizontal-scroll-container {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  /* Style for the list items */
+  .horizontal-list {
+    display: inline-block;
+  }
+  
+  .list-item {
+    display: inline-block;
+    padding: 10px;
+    margin-right: 10px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+  }

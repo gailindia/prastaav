@@ -80,7 +80,7 @@ export class CreateComponent {
     console.log(this.take);
     this.loginServices.postTakeServiceForm(this.take).subscribe({
       next:(res) => {
-        // console.log('Take service', res);
+        console.log('Take service', res);
         this.onTakeServiceSubmit = true;
       },
       error: (e) => console.error(e)
