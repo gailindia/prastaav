@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Login } from "../models/login.model";
 
-const baseUrl = 'http://192.168.1.102:4040/api';
+const baseUrl = 'http://192.168.1.105:4040/api';
 const pincodeUrl = 'https://api.postalpincode.in/pincode';
 @Injectable({
     providedIn: `root`,

@@ -209,13 +209,6 @@ const con = mysql.createConnection({
 
 
 
-
-
-
-
-
-
-
 //ADMIN APIs
 
 // ADMIN LOGIN API
@@ -255,7 +248,7 @@ const con = mysql.createConnection({
     });
 
  // VERIFY OTP
- app.post('/api/AdminVerifyOTP', (req,res) => {
+  app.post('/api/AdminVerifyOTP', (req,res) => {
   const { MobileNo,OTP} = req.body;
 
   con.query('select OTP from AdminLogin where Mobile =  ?',[MobileNo], (error, rows, result) => {
@@ -271,7 +264,14 @@ const con = mysql.createConnection({
       }      
     }
   })     
-});
+  });
+
+  //Admin dashboard services display
+  app.get('/api/getAdminDashboardService', (req,res) => {
+    con.query('select * from Service')
+
+  });
+
 
 
 
