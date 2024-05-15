@@ -38,4 +38,23 @@ export class LoginService{
     }
     
 
+    deleteFromCart(Service_id:any):Observable<any>{
+        const options = {
+            body: {
+              Serviceid : Service_id,
+            },
+          };
+        return this.http.delete(`${baseUrl}/deleteFromCart`,options);
+    }
+
+    editFromCart(Service_id:any):Observable<any>{
+        // const options = {
+        //     body: {
+        //       Serviceid : Service_id,
+        //     },
+        //   };
+        console.log(Service_id);
+        return this.http.post(`${baseUrl}/editFromCart`,Service_id);
+    }
+
 }

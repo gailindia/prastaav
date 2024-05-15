@@ -14,6 +14,7 @@ export class CreateComponent {
   work = false;
 
   onTakeServiceSubmit = false;
+  isEditClicked = "false";
 
 
   serviceList:any;
@@ -23,7 +24,7 @@ export class CreateComponent {
     State:'',
     City:'',
     Area:'',
-    Name:'',
+    S_Name:'',
     Gender :'',
     Age:'',
     Profession:'',
@@ -63,6 +64,13 @@ export class CreateComponent {
   }
 
   ngOnInit():void {
+    this.isEditClicked = localStorage.getItem("isEditClick")??"false";
+    console.log(this.isEditClicked);
+ 
+    let s = localStorage.getItem("editValue")??"";
+    let retArray = JSON.parse(s);
+    console.log("editform", retArray[0]);
+    this.take = retArray[0];
     this.loginServices.getServices().subscribe({
       next:(res)=>{
         this.serviceList = res;
@@ -86,5 +94,4 @@ export class CreateComponent {
       error: (e) => console.error(e)
     });
   }
-
 }

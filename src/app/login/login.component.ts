@@ -20,6 +20,7 @@ isAdmin = false;
 
 
 constructor(private loginService : LoginService, private router : Router){
+
 }
 
 // ngOnInit(){
@@ -33,6 +34,12 @@ sendOTP() : void{
   const data = {
     MobileNo : this.login.MobileNo,
   };
+  this.Submitted = true;
+  console.log(data);
+  // this.loginService.sendOTP(data).subscribe({
+  //   next: (res) => {
+  //     console.log('Login service', this.login.MobileNo);
+  //     this.Submitted = true;
 
   this.loginService.sendOTP(data).subscribe({
     next: (res) => {
@@ -46,6 +53,11 @@ sendOTP() : void{
     
     error: (e) => alert("Please fill number")
   });
+  //     localStorage.setItem('MobileNo', `${this.login.MobileNo}`);
+  //     // this.loggedIn = true;
+  //   },
+  //   error: (e) => console.error(e)
+  // });
   
 
 }

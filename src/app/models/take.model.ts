@@ -1,5 +1,5 @@
 export class Take {
-    Name?: string;
+    S_Name?: string;
     Gender?:string;
     Age?:string;
     Profession?:string;
