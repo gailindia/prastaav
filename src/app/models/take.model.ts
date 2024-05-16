@@ -1,4 +1,5 @@
 export class Take {
+    Serviceid?:string;
     S_Name?: string;
     Gender?:string;
     Age?:string;

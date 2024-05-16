@@ -29,6 +29,7 @@ sendOTP() : void{
     MobileNo : this.login.MobileNo,
   };
   this.Submitted = true;
+  
   console.log(data);
   // this.loginService.sendOTP(data).subscribe({
   //   next: (res) => {

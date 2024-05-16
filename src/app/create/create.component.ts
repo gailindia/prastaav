@@ -17,6 +17,7 @@ export class CreateComponent {
   serviceList:any;
 
   take : Take = {
+    Serviceid:'',            
     Pincode : '',
     State:'',
     City:'',
@@ -65,14 +66,33 @@ export class CreateComponent {
     console.log(this.isEditClicked);
  
     let s = localStorage.getItem("editValue")??"";
-    let retArray = JSON.parse(s);
-    console.log("editform", retArray[0]);
-    this.take = retArray[0];
+    let cat = localStorage.getItem("category")??'';
+    const data = {
+      Category : cat,
+    };
+    if(s.length>0){
+      let retArray = JSON.parse(s);
+      console.log("editform", retArray[0]);
+      
+      this.loginServices.getCategory(data).subscribe({
+        next:(res)=>{
+          this.serviceList = res;
+          console.log('category', res);
+        }
+      })
+      
+      this.take = retArray[0];
+    }else{
+      localStorage.setItem("editValue","");
     this.loginServices.getServices().subscribe({
+
       next:(res)=>{
+        console.log("res", res);
         this.serviceList = res;
+
       }
-    })  
+    })
+  }  
   }
 
   selectedTeam = '';
@@ -86,6 +106,7 @@ export class CreateComponent {
       next:(res) => {
         // console.log('Take service', res);
         this.onTakeServiceSubmit = true;
+        localStorage.setItem("editValue","");
       },
       error: (e) => console.error(e)
     });

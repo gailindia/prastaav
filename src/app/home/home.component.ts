@@ -11,4 +11,8 @@ export class HomeComponent {
       this.isLoggedIn = localStorage.getItem("IsLoogedIn");
     }
 
+    checkOnEdit(){
+      localStorage.setItem("editValue","");
+    }
+
 }

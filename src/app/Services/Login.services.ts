@@ -3,8 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Login } from "../models/login.model";
 
-const baseUrl = 'http://192.168.1.105:4040/api';
-
+const baseUrl = 'http://192.168.1.104:4040/api';
 
 const pincodeUrl = 'https://api.postalpincode.in/pincode';
 @Injectable({
@@ -37,6 +36,10 @@ export class LoginService{
         return this.http.get(`${baseUrl}/getallservices`);
     }
 
+    getCategory(data:any):Observable<any>{
+        return this.http.post(`${baseUrl}/GetCategory`,data);
+    }
+
     deleteFromCart(Service_id:any):Observable<any>{
         const options = {
             body: {
@@ -47,11 +50,6 @@ export class LoginService{
     }
 
     editFromCart(Service_id:any):Observable<any>{
-        // const options = {
-        //     body: {
-        //       Serviceid : Service_id,
-        //     },
-        //   };
         console.log(Service_id);
         return this.http.post(`${baseUrl}/editFromCart`,Service_id);
     }
