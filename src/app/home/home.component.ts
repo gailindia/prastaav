@@ -12,6 +12,7 @@ export class HomeComponent {
     }
 
     checkOnEdit(){
+      localStorage.setItem("isEditClick","false");
       localStorage.setItem("editValue","");
     }
 

@@ -42,11 +42,11 @@
             <label for="Service">Service</label>
               <select name="Service"class="form-control" #teams (change) = "onSelected(teams.value)">
                 
-                @if(!isEditClicked){
+                <!-- @if(!isEditClicked){
                   <option>-- Select Services --</option>
                 }@else{
                   <option [value]="serviceList[0].Category">{{serviceList[0].Category}}</option>
-                }
+                } -->
                 
                 <option [value]="serv.Category" *ngFor="let serv of serviceList">{{serv.Category}}</option>
               </select> 
