@@ -11,12 +11,8 @@ app.use(bodyParser.json());
 app.use(cors({origin:true}));
 
 // const hostname = '192.168.1.107';
-<<<<<<< HEAD
 
 const hostname = '192.168.1.101';
-=======
-const hostname = '192.168.1.103';
->>>>>>> origin/surbhi
 const port = 4040;
 
 const con = mysql.createConnection({
@@ -113,7 +109,7 @@ const con = mysql.createConnection({
 
   // LOGIN API
   app.post('/api/takeservice',async(req, res) => {
-      const { S_Name, Gender,Age, Profession, Pincode,State,City,Area,Group,GenderS,AgeS,Experience,SpecialNote,DocLink,VideoLink,LocationLink,AnySpecialGroup,Category,Charges_paid, MobileNo} = req.body;
+      const { Name, Gender,Age, Profession, Pincode,State,City,Area,Group,GenderS,AgeS,Experience,SpecialNote,DocLink,VideoLink,LocationLink,AnySpecialGroup,Category,Charges_paid, MobileNo} = req.body;
       const dateTimeObject = new Date(); 
       try {
         const OTP = Math.floor(100000 + Math.random() * 900000);
@@ -148,7 +144,7 @@ const con = mysql.createConnection({
           if (err) throw err;
           else{
             
-            con.query('INSERT INTO servicedtl (Serviceid,S_Name,Gender,Country,State,City,Area,Pincode) VALUES (?,?,?,?,?,?,?,?)',[Serviceid,S_Name,Gender,"INDIA",State,City,Area,Pincode ], (err, result) => {
+            con.query('INSERT INTO servicedtl (Serviceid,S_Name,Gender,Country,State,City,Area,Pincode) VALUES (?,?,?,?,?,?,?,?)',[Serviceid,Name,Gender,"INDIA",State,City,Area,Pincode ], (err, result) => {
               if (err) throw err;
             res.json({ message: 'Inserted successfully'});
             });
@@ -160,6 +156,15 @@ const con = mysql.createConnection({
           }
         }
       });
+            
+
+
+
+
+
+
+
+     
     } catch (error) {
       res.json({ message: 'Error calling URL:', error}); 
     }    
@@ -178,7 +183,6 @@ const con = mysql.createConnection({
     });
   });
 
-<<<<<<< HEAD
   //GET API for TAKE service in sell all
   app.get('/api/getTakeServiceDet', (req, res) => {
     const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid where servicehdr.Service ="Take" ';
@@ -204,6 +208,8 @@ const con = mysql.createConnection({
       }
     });
   });
+
+
 
 
 
@@ -274,43 +280,6 @@ const con = mysql.createConnection({
 
 
 
-=======
-  //delete service from cart
-  app.delete('/api/deleteFromCart',(req, res) => {
-    const { Serviceid } = req.body;
-    const query = 'DELETE FROM servicedtl WHERE Serviceid=?';
-
-    con.query(query,[Serviceid], (error, rows, result) => {
-      if (error) {
-        throw error;
-      } else {  
-      
-          const queryhdr = 'DELETE FROM servicehdr WHERE Serviceid=?';
-          con.query(queryhdr,[Serviceid], (error, results) => {
-            if (error) {
-              res.status(500).send(error);
-            } else {
-              res.json(results);
-            }
-          });
-           
-      }
-    });     
-  });
-
-
-  app.post('/api/editFromCart',(req, res) => {
-    const { Serviceid } = req.body;
-    const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid WHERE servicehdr.Serviceid = ?';
-    con.query(query,[Serviceid], (error, result) => {
-      if (error) {
-        throw error;
-      } else {  
-        res.json(result);
-      }
-    });  
-  })
->>>>>>> origin/surbhi
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
