@@ -16,43 +16,77 @@ export class AdminComponent {
     MobileNo: ''
   };
 
+
+
   constructor(private loginService : LoginService,private router: Router) { }
 
 
 
   sendOtp() {
-    this.loginService.sendOTP(this.mobileNumber).subscribe(
-      response => {
-        // Handle response (e.g., display success message)
-        console.log('OTP sent successfully');
-        // Show OTP field after sending OTP
+    const data = {
+      MobileNo : this.mobileNumber,
+    };
+    this.loginService.sendAdminOTP(data).subscribe({
+      next:  (res) => {
+        console.log('Login service', this.mobileNumber);
         this.otpSent = true;
+  
+        localStorage.setItem('MobileNo', `${this.mobileNumber}`);
+        // this.loggedIn = true;
       },
-      error => {
-        // Handle error (e.g., display error message)
-        alert("Please fill number");
-        console.error('Error sending OTP:', error);
-      }
+      
+      error: (e) => alert("Please fill number")
+    }
+      // response => {
+      //   // Handle response (e.g., display success message)
+      //   console.log('OTP sent successfully');
+      //   // Show OTP field after sending OTP
+      //   this.otpSent = true;
+      // },
+      // error => {
+      //   // Handle error (e.g., display error message)
+      //   alert("Please fill number");
+      //   console.error('Error sending OTP:', error);
+      // }
     );
   }
 
-  login() {
+  // login() {
+  //   const data = {
+  //     MobileNo : `${localStorage.getItem("MobileNo")}`,
+  //     OTP:this.otp
+  //   };
+  //   // Verify OTP logic
+  //   this.loginService.verifyOTP(data).subscribe(
+  //     response => {
+  //       // Handle response (e.g., navigate to admin page on success)
+  //       console.log('OTP verification successful');
+  //       alert("OTP sent successfully")
+  //       this.router.navigate(['/admin']);
+  //     },
+  //     error => {
+  //       // Handle error (e.g., display error message)
+  //       console.error('Error verifying OTP:', error);
+  //     }
+  //   );
+  // }
+
+  login() : void{
     const data = {
       MobileNo : `${localStorage.getItem("MobileNo")}`,
       OTP:this.otp
     };
-    // Verify OTP logic
-    this.loginService.verifyOTP(data).subscribe(
-      response => {
-        // Handle response (e.g., navigate to admin page on success)
-        console.log('OTP verification successful');
-        alert("OTP sent successfully")
-        this.router.navigate(['/admin']);
+  
+    this.loginService.adminverifyOTP(data).subscribe({
+      next: (res) => {
+        
+        console.log('OTP Verified Successfully');
+        localStorage.setItem("IsLoogedIn",'true');
+       this.router.navigate([`homeScreen`]);
+        
       },
-      error => {
-        // Handle error (e.g., display error message)
-        console.error('Error verifying OTP:', error);
-      }
-    );
+      error: (e) => console.error(e)
+    });
+  
   }
 }
