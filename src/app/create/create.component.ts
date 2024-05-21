@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Take, services } from '../models/take.model';
 import { LoginService } from '../Services/Login.services';
+
 import { Console } from 'console';
 
 @Component({
@@ -11,6 +12,7 @@ import { Console } from 'console';
 export class CreateComponent {
 
   work = false;
+
   onTakeServiceSubmit = false;
   isEditClicked = "false";
   // listA : any;
@@ -125,15 +127,11 @@ export class CreateComponent {
     console.log(this.take);
     this.loginServices.postTakeServiceForm(this.take).subscribe({
       next:(res) => {
-        // console.log('Take service', res);
+        console.log('Take service', res);
         this.onTakeServiceSubmit = true;
         localStorage.setItem("editValue","");
       },
       error: (e) => console.error(e)
     });
   }
-
-
-
-
 }

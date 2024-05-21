@@ -1,0 +1,22 @@
+<!-- login.component.html -->
+
+<div class="login-container">
+    <h2>Admin Login</h2>
+    <form (ngSubmit)="sendOtp()">
+      <!-- Input field for mobile number -->
+      <div class="form-group">
+        <label for="mobileNumber">Mobile Number:</label>
+        <input type="text" id="mobileNumber" name="mobileNumber" [(ngModel)]="mobileNumber" required>
+      </div>
+      <!-- Show OTP field only if otpSent flag is true -->
+      <div class="form-group" *ngIf="otpSent">
+        <label for="otp">OTP:</label>
+        <input type="text" id="otp" name="otp" [(ngModel)]="otp" required>
+      </div>
+      <!-- Button to send OTP -->
+      <button type="button" (click)="sendOtp()" *ngIf="!otpSent">Send OTP</button>
+      <!-- Button to login after entering OTP -->
+      <button type="submit" *ngIf="otpSent">Login</button>
+    </form>
+  </div>
+  
