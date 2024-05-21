@@ -1,23 +1,28 @@
 <html>
 <body>
 <div class="submit-form">
-    @if(! Submitted){
+    @if(! Submitted && !isAdmin){
         <div class="form-group" style="width: 400px; padding:40px">
             <h2>Login Form  </h2>
-            
+        
             <div class="user-box">
             <label for="MobileNo">MobileNo</label>
             <input type="text" class="form-control" id="MobileNo" required [(ngModel)]="login.MobileNo" name="MobileNo"/>
-            </div>         
-            <button (click)="sendOTP()" class="btn btn-success">Login</button>
+
+            </div>
+            
+            <button (click)="sendOTP()" class="btn btn-success">Login</button>&nbsp;
+            <button (click)="handleLinkClick()" class="btn btn-success">Login as Admin</button>
+
           </div>
 
           
-    } @else {
-        <app-home></app-home>
-    <!-- <app-verify-otp></app-verify-otp> -->
-    }
+    } @else if(isAdmin) {
+        <app-admin></app-admin>
     
+    }@else if (Submitted) {
+        <app-verify-otp></app-verify-otp>
+    }
 </div>
 </body>
 </html>

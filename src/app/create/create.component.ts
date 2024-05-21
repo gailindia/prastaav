@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Take, services } from '../models/take.model';
 import { LoginService } from '../Services/Login.services';
+
 import { Console } from 'console';
 
 @Component({
@@ -11,9 +12,11 @@ import { Console } from 'console';
 export class CreateComponent {
 
   work = false;
+
   onTakeServiceSubmit = false;
   isEditClicked = "false";
-
+  // listA : any;
+  listA: any[] = [];
   serviceList:any;
 
   take : Take = {
@@ -71,13 +74,34 @@ export class CreateComponent {
       Category : cat,
     };
     if(s.length>0){
+     
       let retArray = JSON.parse(s);
       console.log("editform", retArray[0]);
       
       this.loginServices.getCategory(data).subscribe({
         next:(res)=>{
-          this.serviceList = res;
-          console.log('category', res);
+          let s = res[0]['Category'];
+          this.listA.push(res[0])
+          // this.listA = [res[0]];
+          // this.serviceList = res;
+          console.log('this.serviceList', this.serviceList);
+          this.loginServices.getServices().subscribe({
+            next:(result)=>{
+              for(let i=0;i<result.length;i++){
+                if(result[i]['Category'] != cat){
+                  
+                  this.listA.push(result[i]);
+                  // this.serviceList = [...result];
+                }
+              }
+              
+              // this.serviceList = res;
+             
+            }
+          })
+          console.log('listA ifff', this.listA);
+          
+          this.serviceList = this.listA;
         }
       })
       
@@ -85,7 +109,6 @@ export class CreateComponent {
     }else{
       localStorage.setItem("editValue","");
     this.loginServices.getServices().subscribe({
-
       next:(res)=>{
         console.log("res", res);
         this.serviceList = res;
@@ -104,15 +127,11 @@ export class CreateComponent {
     console.log(this.take);
     this.loginServices.postTakeServiceForm(this.take).subscribe({
       next:(res) => {
-        // console.log('Take service', res);
+        console.log('Take service', res);
         this.onTakeServiceSubmit = true;
         localStorage.setItem("editValue","");
       },
       error: (e) => console.error(e)
     });
   }
-
-
-
-
 }

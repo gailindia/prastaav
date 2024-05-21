@@ -12,6 +12,7 @@ app.use(bodyParser.json());
 app.use(cors({origin:true}));
 
 const hostname = '192.168.1.103';
+
 const port = 4040;
 
 const con = mysql.createConnection({
@@ -110,11 +111,12 @@ const con = mysql.createConnection({
 
   // LOGIN API
   app.post('/api/takeservice',async(req, res) => {
+
       const { S_Name, Gender,Age, Profession, Pincode,State,City,Area,SpecialNote,DocLink,VideoLink,LocationLink,AnySpecialGroup,Category,Charges_paid, MobileNo, Serviceid} = req.body;
+
       const dateTimeObject = new Date(); 
       try {     
         var OTP = Math.floor(100000 + Math.random() * 900000);
-
         if(Serviceid === "")
         {     
             const currentDate = new Date(); 
@@ -166,6 +168,39 @@ const con = mysql.createConnection({
                 }             
           });        
         }
+
+        console.log(till_date);
+
+      Serviceid = "SDK"+ currentYear + currentHour + currentMonth + currentMinute + currentDay + lastThreeDigits + currentSecond;
+      console.log(Serviceid);
+
+      con.query('select * from services where Category =  ?',[Category], (error, result) => {
+        if (error) {
+          throw error;
+        } else {
+          if(result.length == "1")
+          {
+            Sector = result[0]['Sector'];
+            Service = result[0]['Service'];
+            Charges = result[0]['ChargePerDay'];
+
+
+          con.query('INSERT INTO servicehdr (Serviceid,Sector,Service,Category,Charges,Charges_paid,Created_On,Valid_till,S_Status) VALUES (?,?,?,?,?,?,?,?,?)',[Serviceid,Sector,Service,Category,Charges,Charges_paid,dateTimeObject,till_date,"Save" ], (err, result) => {
+          if (err) throw err;
+          else{
+            
+            con.query('INSERT INTO servicedtl (Serviceid,S_Name,Gender,Country,State,City,Area,Pincode) VALUES (?,?,?,?,?,?,?,?)',[Serviceid,Name,Gender,"INDIA",State,City,Area,Pincode ], (err, result) => {
+              if (err) throw err;
+            res.json({ message: 'Inserted successfully'});
+            });
+
+          }   
+        });
+
+
+          }
+        }
+      });
     } catch (error) {
       res.json({ message: 'Error calling URL:', error}); 
     }    
@@ -267,6 +302,8 @@ const con = mysql.createConnection({
 
 
 
+
+
 //ADMIN APIs
 
 // ADMIN LOGIN API
@@ -333,6 +370,7 @@ const con = mysql.createConnection({
       }
     })
   });
+
 
   app.post('/api/adminVerified', (req,res)=>{
     const {serviceid} = req.body;

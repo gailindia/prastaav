@@ -13,7 +13,11 @@ import { CreateComponent } from './create/create.component';
 import { CartComponent } from './cart/cart.component';
 import { SeeallComponent } from './seeall/seeall.component';
 import { HomeScreenComponent } from './home-screen/home-screen.component';
+<<<<<<< HEAD
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+=======
+import { AdminComponent } from './admin/admin.component';
+>>>>>>> origin/surbhi
 
 @NgModule({
   declarations: [
@@ -24,6 +28,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     CreateComponent,
     CartComponent,
     SeeallComponent,
+    HomeScreenComponent,
+    AdminComponent,
     HomeScreenComponent
   ],
   imports: [
@@ -38,6 +44,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { 
-  
+
+export class AppModule {
 }
+

@@ -9,6 +9,12 @@ import { Router } from '@angular/router';
   styleUrl: './cart.component.css'
 })
 export class CartComponent {
+
+  
+form: any;
+items: string[] = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
+
+
     servicesCart : GetCart={
       Serviceid:'',
         Category:'',
