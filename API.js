@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(cors({origin:true}));
 
-const hostname = '192.168.1.104';
+const hostname = '192.168.1.103';
 const port = 4040;
 
 const con = mysql.createConnection({
@@ -138,7 +138,7 @@ const con = mysql.createConnection({
                       Sector = result[0]['Sector'];
                       Service = result[0]['Service'];
                       Charges = result[0]['ChargePerDay'];      
-                    con.query('INSERT INTO servicehdr (Serviceid,Sector,Service,Category,Charges,Charges_paid,Created_On,Valid_till,S_Status) VALUES (?,?,?,?,?,?,?,?,?)',[Id,Sector,Service,Category,Charges,Charges_paid,dateTimeObject,till_date,"Save" ], (err, result) => {
+                    con.query('INSERT INTO servicehdr (Serviceid,Sector,Service,Category,Charges,Charges_paid,Created_On,Valid_till,S_Status,Mobile) VALUES (?,?,?,?,?,?,?,?,?,?)',[Id,Sector,Service,Category,Charges,Charges_paid,dateTimeObject,till_date,"Save",Mobile ], (err, result) => {
                       if (err) throw err;
                       else{         
                         con.query('INSERT INTO servicedtl (Serviceid,S_Name,Gender,Age,Profession,Country,State,City,Area,Pincode,SpecialNote,DocLink,VideoLink,LocationLink,AnySpecialGroup) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[Id,S_Name,Gender,Age,Profession,"INDIA",State,City,Area,Pincode,SpecialNote,DocLink,VideoLink,LocationLink,AnySpecialGroup ], (err, result) => {
@@ -158,8 +158,8 @@ const con = mysql.createConnection({
             } 
             else
                 {
-                  const updateQuery = 'UPDATE servicedtl SET Gender = ?, Age = ?, Profession=?,SpecialNote=?,DocLink=?,VideoLink =?,LocationLink=?,AnySpecialGroup=? WHERE Serviceid = ?';                 
-                  const params = [Gender, Age,Profession,SpecialNote,DocLink,VideoLink,LocationLink,AnySpecialGroup, Serviceid];
+                  const updateQuery = 'UPDATE servicedtl SET S_Name = ? Gender = ?, Age = ?, Profession=?, Pincode =?, State=?, City=?, Area=?,SpecialNote=?,DocLink=?,VideoLink =?,LocationLink=?,AnySpecialGroup=? WHERE Serviceid = ?';                 
+                  const params = [S_Name, Gender, Age,Profession,Pincode,State,City,Area,SpecialNote,DocLink,VideoLink,LocationLink,AnySpecialGroup, Serviceid];
                   con.query(updateQuery, params, (err, results) => {
                     res.json({ message: 'Updated successfully'});
                   });
@@ -210,40 +210,54 @@ const con = mysql.createConnection({
     });
   });
 
-//delete service from cart
-app.delete('/api/deleteFromCart',(req, res) => {
-  const { Serviceid } = req.body;
-  const query = 'DELETE FROM servicedtl WHERE Serviceid=?';
-  con.query(query,[Serviceid], (error, rows, result) => {
-    if (error) {
-      throw error;
-    } else {  
-    
-        const queryhdr = 'DELETE FROM servicehdr WHERE Serviceid=?';
-        con.query(queryhdr,[Serviceid], (error, results) => {
-          if (error) {
-            res.status(500).send(error);
-          } else {
-            res.json(results);
-          }
-        });
-         
-    }
-  });     
-});
+  //delete service from cart
+  app.delete('/api/deleteFromCart',(req, res) => {
+    const { Serviceid } = req.body;
+    const query = 'DELETE FROM servicedtl WHERE Serviceid=?';
+    con.query(query,[Serviceid], (error, rows, result) => {
+      if (error) {
+        throw error;
+      } else {  
+      
+          const queryhdr = 'DELETE FROM servicehdr WHERE Serviceid=?';
+          con.query(queryhdr,[Serviceid], (error, results) => {
+            if (error) {
+              res.status(500).send(error);
+            } else {
+              res.json(results);
+            }
+          });
+          
+      }
+    });     
+  });
 
-//edit from cart
-app.post('/api/editFromCart',(req, res) => {
-  const { Serviceid } = req.body;
-  const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.Age, servicedtl.Profession,servicedtl.SpecialNote,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid WHERE servicehdr.Serviceid = ?';
-  con.query(query,[Serviceid], (error, result) => {
-    if (error) {
-      throw error;
-    } else {  
-      res.json(result);
+  //edit from cart
+  app.post('/api/editFromCart',(req, res) => {
+    const { Serviceid } = req.body;
+    const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.Age, servicedtl.Profession,servicedtl.SpecialNote,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid WHERE servicehdr.Serviceid = ?';
+    con.query(query,[Serviceid], (error, result) => {
+      if (error) {
+        throw error;
+      } else {  
+        res.json(result);
+      }
+    });  
+  })
+
+  app.get('/api/getSeeAll/:service', (req, res) => {
+  // Access parameters using req.params
+  const service = req.params.service;
+  const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup, servicehdr.Mobile FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid where servicehdr.Service = ? and servicehdr.S_Status ="Verified" ';
+  con.query(query,[service],(error,results) =>{
+    if(error){
+      res.status(500).send(error);  
     }
-  });  
-})
+    else{
+      res.json(results);
+    }
+  })
+  });
 
 
 
@@ -279,10 +293,6 @@ app.post('/api/editFromCart',(req, res) => {
             });
           }else{
             res.json({ message: 'You ar not an Admin!'});
-            // con.query('INSERT INTO AdminLogin (Mobile,OTP,Verified_on,Created_On, Closed_on,Closing_remarks) VALUES (?,?,?,?,?,?)',[MobileNo,OTP,dateTimeObject,dateTimeObject,dateTimeObject,""], (err, result) => {
-            //   if (err) throw err;
-            //   res.json({ message: 'Login successfully'});
-            // });
           }      
         }
       }) 
@@ -311,12 +321,31 @@ app.post('/api/editFromCart',(req, res) => {
   });
 
   //Admin dashboard services display
-  app.get('/api/getAdminDashboardService', (req,res) => {
-    con.query('select * from Service')
-
+  app.get('/api/getAdminDashboardService/:service', (req,res) => {
+    const service = req.params.service;
+    const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup, servicehdr.Mobile FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid where servicehdr.Service = ? and servicehdr.S_Status ="Paid" ';
+    con.query(query,[service],(error,results) =>{
+      if(error){
+        res.status(500).send(error);  
+      }
+      else{
+        res.json(results);
+      }
+    })
   });
 
-
+  app.post('/api/adminVerified', (req,res)=>{
+    const {serviceid} = req.body;
+    const query = 'update servicehdr set S_Status = "Verified" where Serviceid = ? ';
+    con.query(query,[serviceid],(error,results) => {
+      if(error){
+        res.status(500).send(error);
+      }
+      else{
+        res.json({ message: 'Verified successfully'});
+      }
+    })
+  });
 
 
 

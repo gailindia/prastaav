@@ -2,7 +2,6 @@
 <body>
 
 <div class="submit-form">
-    <h1>{{isEditClicked}}</h1>
     @if(! onTakeServiceSubmit){
         <div class="form-group" style="width: 400px; padding:40px;margin :0px">
        
@@ -44,11 +43,11 @@
                 
                 @if(!isEditClicked){
                   <option>-- Select Services --</option>
+                  <option [value]="serv.Category" *ngFor="let serv of serviceList">{{serv.Category}}</option>
                 }@else{
-                  <option [value]="serviceList[0].Category">{{serviceList[0].Category}}</option>
-                }
-                
-                <option [value]="serv.Category" *ngFor="let serv of serviceList">{{serv.Category}}</option>
+                  <option >{{serviceList[0].Category}}</option>
+                  <option [value]="serv.Category" *ngFor="let serv of serviceList">{{serv.Category}}</option> 
+                }   
               </select> 
           
             <label for="SpecialNote">Special Note</label>
