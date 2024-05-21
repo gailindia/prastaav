@@ -14,6 +14,7 @@ import { CartComponent } from './cart/cart.component';
 import { SeeallComponent } from './seeall/seeall.component';
 import { HomeScreenComponent } from './home-screen/home-screen.component';
 import { AdminComponent } from './admin/admin.component';
+import { AdminhomeComponent } from './adminhome/adminhome.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { AdminComponent } from './admin/admin.component';
     SeeallComponent,
     HomeScreenComponent,
     AdminComponent,
-    HomeScreenComponent
+    HomeScreenComponent,
+    AdminhomeComponent
   ],
   imports: [
     BrowserModule,
