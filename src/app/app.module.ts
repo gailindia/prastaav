@@ -17,6 +17,8 @@ import { AdminComponent } from './admin/admin.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DialogAnimationsExampleDialogComponent } from './dialog-animations-example-dialog/dialog-animations-example-dialog.component';
+import { AdminhomeComponent } from './adminhome/adminhome.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +31,9 @@ import { DialogAnimationsExampleDialogComponent } from './dialog-animations-exam
     HomeScreenComponent,
     AdminComponent,
     HomeScreenComponent,
-    DialogAnimationsExampleDialogComponent
+    DialogAnimationsExampleDialogComponent,
+    AdminhomeComponent
+
   ],
   imports: [
     BrowserModule,
