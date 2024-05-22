@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from '../Services/Login.services';
 import { Login } from '../models/login.model';
-
+ 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -16,13 +16,13 @@ export class AdminComponent {
   loginn: Login = {
     MobileNo: ''
   };
-
-
-
+ 
+ 
+ 
   constructor(private loginService : LoginService,private router: Router) { }
-
-
-
+ 
+ 
+ 
   sendOtp() {
     const data = {
       MobileNo : this.mobileNumber,
@@ -33,34 +33,33 @@ export class AdminComponent {
         console.log("RES::",res);
         console.log('Login service', this.mobileNumber);
         this.otpSent = true;
-  
+ 
         localStorage.setItem('MobileNo', `${this.mobileNumber}`);
         // this.loggedIn = true;
       },
-      
       error: (e) => console.error(e)
     }
     );
   }
-
 
   login() : void{
     const data = {
       MobileNo : `${localStorage.getItem("MobileNo")}`,
       OTP:this.otp
     };
-  
+ 
     this.loginService.adminverifyOTP(data).subscribe({
       next: (res) => {
         this.verifyotp = true;
-        
+       
         console.log('OTP Verified Successfully');
         localStorage.setItem("IsLoogedIn",'true');
        this.router.navigate([`adminhome`]);
-        
+       
       },
       error: (e) => console.error(e)
     });
-  
+ 
   }
 }
+ 
