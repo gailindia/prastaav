@@ -14,6 +14,9 @@ import { SeeallComponent } from './seeall/seeall.component';
 import { HomeScreenComponent } from './home-screen/home-screen.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { FormsModule } from '@angular/forms';
+import { AdminComponent } from './admin/admin.component';
+import { AdminhomeComponent } from './adminhome/adminhome.component';
+import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,10 @@ import { FormsModule } from '@angular/forms';
     CreateComponent,
     CartComponent,
     SeeallComponent,
-    HomeScreenComponent
+    HomeScreenComponent,
+    AdminComponent,
+    AdminhomeComponent,
+    AlertDialogComponent
   ],
   imports: [
     BrowserModule,

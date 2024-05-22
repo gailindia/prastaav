@@ -360,7 +360,7 @@ const con = mysql.createConnection({
   //Admin dashboard services display
   app.get('/api/getAdminDashboardService', (req,res) => {
     const service = req.params.service;
-    const query = 'SELECT servicehdr.Serviceid,servicedtl.S_Name,servicedtl.Age,servicedtl.Gender,servicedtl.profession,servicedtl.Pincode,servicehdr.Category,servicedtl.country,servicedtl.City,servicedtl.Area,servicedtl.State,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup FROM servicehdr INNER JOIN servicedtl ONservicehdr.Serviceid=servicedtl.Serviceid where  servicehdr.S_Status ="Paid" ';
+    const query = 'SELECT servicehdr.Serviceid,servicedtl.S_Name,servicedtl.Age,servicedtl.Gender,servicedtl.profession,servicedtl.Pincode,servicehdr.Category,servicedtl.country,servicedtl.City,servicedtl.Area,servicedtl.State,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid where  servicehdr.S_Status ="Paid" ';
     con.query(query,[service],(error,results) =>{
       if(error){
         res.status(500).send(error);  
@@ -384,6 +384,9 @@ const con = mysql.createConnection({
       }
     })
   });
+
+
+  
 
 
 
