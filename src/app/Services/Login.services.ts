@@ -63,6 +63,7 @@ export class LoginService{
     adminverifyOTP(data:any):Observable<any>{
         return this.http.post(`${baseUrl}/AdminVerifyOTP`,data);
     }
+    //API for AdminHome
     adminhometabledata():Observable<any>{
         return this.http.get(`${baseUrl}/getAdminDashboardService`);
     }
