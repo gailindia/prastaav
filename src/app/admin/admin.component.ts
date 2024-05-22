@@ -11,6 +11,7 @@ import { Login } from '../models/login.model';
 export class AdminComponent {
   mobileNumber: string = '';
   otp: string = '';
+  verifyotp = false;
   otpSent: boolean = false; // Flag to control OTP field visibility
   loginn: Login = {
     MobileNo: ''
@@ -79,10 +80,11 @@ export class AdminComponent {
   
     this.loginService.adminverifyOTP(data).subscribe({
       next: (res) => {
+        this.verifyotp = true;
         
         console.log('OTP Verified Successfully');
         localStorage.setItem("IsLoogedIn",'true');
-       this.router.navigate([`homeScreen`]);
+       this.router.navigate([`adminhome`]);
         
       },
       error: (e) => console.error(e)
