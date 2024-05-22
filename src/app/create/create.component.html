@@ -47,7 +47,7 @@
                   <option [value]="serv.Category" *ngFor="let serv of serviceList">{{serv.Category}}</option>
                 }@else{
                   <option [value]="serviceList[0].Category">{{serviceList[0].Category}}</option>
-                }
+                } -->
                 
                 <option [value]="serv.Category" *ngFor="let serv of serviceList">{{serv.Category}}</option>
               </select> 
@@ -69,15 +69,15 @@
 
             <button (click)="onSubmitTakeService()"   class="btn btn-success">Submit</button>
 
-          <!-- </div> -->
+           </div>
  
-          </div>
-          
+              
     } @else {
       <h4>Service Submitted Successfully !!</h4>
     }
 
     
+
 </div>
 
 </body>

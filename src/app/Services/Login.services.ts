@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Login } from "../models/login.model";
 
-const baseUrl = 'http://192.168.1.101:4040/api';
+const baseUrl = 'http://192.168.1.104:4040/api';
 
 const pincodeUrl = 'https://api.postalpincode.in/pincode';
 
@@ -62,6 +62,5 @@ export class LoginService{
     adminverifyOTP(data:any):Observable<any>{
         return this.http.post(`${baseUrl}/AdminVerifyOTP`,data);
     }
-
 
 }
