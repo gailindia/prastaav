@@ -10,7 +10,7 @@ import { Console } from 'console';
   styleUrl: './create.component.css'
 })
 export class CreateComponent {
-
+  editable: boolean = false;
   work = false;
 
   onTakeServiceSubmit = false;
@@ -102,6 +102,8 @@ export class CreateComponent {
           console.log('listA ifff', this.listA);
           
           this.serviceList = this.listA;
+          this.take.Category = cat;
+          this.selectedTeam = cat;
         }
       })
       
@@ -119,7 +121,13 @@ export class CreateComponent {
   }
 
   selectedTeam = '';
-  onSelected(value:string): void {this.selectedTeam = value;}
+  onSelected(value:string): void {
+    this.selectedTeam = value;
+    this.take.Category = value;
+   
+    console.log(" value on edit :: ",value);
+    console.log(" value on edit take :: ",this.take.Category);
+  }
 
   onSubmitTakeService(){
     

@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { GetCart } from '../models/take.model';
 import { LoginService } from '../Services/Login.services';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogAnimationsExampleDialogComponent } from '../dialog-animations-example-dialog/dialog-animations-example-dialog.component';
 
 @Component({
   selector: 'app-cart',
@@ -9,12 +11,8 @@ import { Router } from '@angular/router';
   styleUrl: './cart.component.css'
 })
 export class CartComponent {
-
-  
+ 
 form: any;
-items: string[] = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
-
-
     servicesCart : GetCart={
       Serviceid:'',
         Category:'',
@@ -29,7 +27,15 @@ items: string[] = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
 
     cartList:any;
 
-    constructor(private getServicesCart:LoginService,private router:Router){};
+    constructor(private getServicesCart:LoginService,private router:Router,public dialog: MatDialog){};
+
+    openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+      this.dialog.open( DialogAnimationsExampleDialogComponent, {
+        width: '250px',
+        enterAnimationDuration,
+        exitAnimationDuration,
+      });
+    }
 
     ngOnInit():void {
       this.getCartServices();
@@ -91,5 +97,7 @@ items: string[] = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
           this.router.routeReuseStrategy.shouldReuseRoute = () => false;
           this.router.onSameUrlNavigation = 'reload';
           this.router.navigate([`create`]);
-      }
+    }
+
+
 }

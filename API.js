@@ -119,7 +119,8 @@ const con = mysql.createConnection({
       try {     
         var OTP = Math.floor(100000 + Math.random() * 900000);
         if(Serviceid === "")
-        {     
+        {   
+            const MobileNo = '7987593870';  
             const currentDate = new Date(); 
             const currentYear = currentDate.getFullYear();
             const currentHour = currentDate.getHours();
@@ -169,39 +170,6 @@ const con = mysql.createConnection({
                 }             
           });        
         }
-
-        console.log(till_date);
-
-      Serviceid = "SDK"+ currentYear + currentHour + currentMonth + currentMinute + currentDay + lastThreeDigits + currentSecond;
-      console.log(Serviceid);
-
-      con.query('select * from services where Category =  ?',[Category], (error, result) => {
-        if (error) {
-          throw error;
-        } else {
-          if(result.length == "1")
-          {
-            Sector = result[0]['Sector'];
-            Service = result[0]['Service'];
-            Charges = result[0]['ChargePerDay'];
-
-
-          con.query('INSERT INTO servicehdr (Serviceid,Sector,Service,Category,Charges,Charges_paid,Created_On,Valid_till,S_Status) VALUES (?,?,?,?,?,?,?,?,?)',[Serviceid,Sector,Service,Category,Charges,Charges_paid,dateTimeObject,till_date,"Save" ], (err, result) => {
-          if (err) throw err;
-          else{
-            
-            con.query('INSERT INTO servicedtl (Serviceid,S_Name,Gender,Country,State,City,Area,Pincode) VALUES (?,?,?,?,?,?,?,?)',[Serviceid,Name,Gender,"INDIA",State,City,Area,Pincode ], (err, result) => {
-              if (err) throw err;
-            res.json({ message: 'Inserted successfully'});
-            });
-
-          }   
-        });
-
-
-          }
-        }
-      });
     } catch (error) {
       res.json({ message: 'Error calling URL:', error}); 
     }    
@@ -280,6 +248,19 @@ app.post('/api/editFromCart',(req, res) => {
     }
   });  
 })
+
+app.get('/api/getSeeAll/:service',(req,res)=>{
+  const service = req.params.service;
+  const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup, servicehdr.Mobile FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid where servicehdr.Service = ?';
+  con.query(query,[service],(error,results) =>{
+    if(error){
+      res.status(500).send(error);  
+    }
+    else{
+      res.json(results);
+    }
+  })
+});
 
 
 

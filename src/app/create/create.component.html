@@ -29,13 +29,13 @@
             <div *ngIf="take.Area && take.City">
                
               <label for="City">City</label>
-              <input type="text" class="form-control" id="City" value="{{take.City}}">
+              <input type="text" matInput [readonly]="!editable" class="form-control" id="City" value="{{take.City}}">
 
               <label for="Area">Area</label>
               <input type="text" class="form-control" id="Area" value="{{take.Area}}">
 
               <label for="State">State</label>
-              <input type="text" class="form-control" id="State" value="{{take.State}}">
+              <input type="text" matInput [readonly]="!editable"  class="form-control" id="State" value="{{take.State}}">
 
             </div>
            

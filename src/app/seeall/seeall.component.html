@@ -24,13 +24,13 @@
     </h2>
    <div class="horizontal-scroll-container">
   <div class="horizontal-list">
-    <div *ngFor="let item of items" class="list-item">
-      <h5 class="card-title">{{ 'item.name' }}</h5>
-      <p class="card-text">Name: {{ 'item' }}</p>
-      <p class="card-text">Gender: {{ item }}</p>
-      <p class="card-text">State: {{ 'state' }}</p>
-      <p class="card-text">City: {{ 'city' }}</p>
-      <p class="card-text">Charges: {{ 'charge' }}</p>
+    <div *ngFor="let item of itemsTake" class="list-item">
+      <h5 class="card-title">{{ item.Category }}</h5>
+      <p class="card-text">Name: {{ item.S_Name }}</p>
+      <p class="card-text">Gender: {{ item.Gender }}</p>
+      <p class="card-text">State: {{ item.State  }}</p>
+      <p class="card-text">City: {{ item.City  }}</p>
+      <p class="card-text">Charges: {{ item.Charges  }}</p>
       <button class="btn btn-success">Edit</button>&nbsp;
       <button class="btn btn-success">Pay To Verify</button>&nbsp;
       <button class="btn btn-success">Delete</button>
@@ -41,7 +41,7 @@
 <h2>
   Give Services List
 </h2>
-<div class="horizontal-scroll-container">
+<div class="horizontal-scroll-container"> 
 <div class="horizontal-list">
 <div *ngFor="let item of items" class="list-item">
   <h5 class="card-title">{{ 'item.name' }}</h5>
@@ -55,7 +55,7 @@
   <button class="btn btn-success">Delete</button>
 </div>
 </div>
-</div>
+ </div>
   </main>
 
 </body>
