@@ -3,10 +3,9 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Login } from "../models/login.model";
 
-<<<<<<<<< Temporary merge branch 1
+
 
 const baseUrl = 'http://192.168.1.101:4040/api';
-
 
 const pincodeUrl = 'https://api.postalpincode.in/pincode';
 
