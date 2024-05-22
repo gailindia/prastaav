@@ -71,10 +71,12 @@ items: string[] = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
       };
       this.getServicesCart.editFromCart(data).subscribe({
         next:(res) => {
-          console.log('get service', res);
+          console.log('get service', res[0]['Category']);
   
           localStorage.setItem("isEditClick","true");
           let string = JSON.stringify(res);
+          localStorage.setItem("category",res[0]['Category']);
+
           localStorage.setItem("editValue",string);
           
           // this.router.navigate([`cart`]);

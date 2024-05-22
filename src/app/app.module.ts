@@ -13,8 +13,13 @@ import { CreateComponent } from './create/create.component';
 import { CartComponent } from './cart/cart.component';
 import { SeeallComponent } from './seeall/seeall.component';
 import { HomeScreenComponent } from './home-screen/home-screen.component';
+
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+
 import { AdminComponent } from './admin/admin.component';
+
 import { AdminhomeComponent } from './adminhome/adminhome.component';
+
 
 @NgModule({
   declarations: [
@@ -37,7 +42,8 @@ import { AdminhomeComponent } from './adminhome/adminhome.component';
     FormsModule
   ],
   providers: [
-    provideHttpClient(withFetch())
+    provideHttpClient(withFetch()),
+    provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]
 })

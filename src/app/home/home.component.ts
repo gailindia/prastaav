@@ -12,6 +12,12 @@ export class HomeComponent {
       this.isLoggedIn = localStorage.getItem("IsLoogedIn");
     }
 
+
+    checkOnEdit(){
+      localStorage.setItem("isEditClick","false");
+      localStorage.setItem("editValue","");
+    }
+
   constructor(private router: Router) {}
 
   onCreateClicked(): void {
@@ -21,7 +27,6 @@ export class HomeComponent {
     this.router.navigate(['create']);
   }
   
- 
-    // isLoggedIn = localStorage.getItem("IsLoogedIn");
+
 
 }

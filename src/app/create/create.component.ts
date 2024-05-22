@@ -15,11 +15,12 @@ export class CreateComponent {
 
   onTakeServiceSubmit = false;
   isEditClicked = "false";
-
-
+  // listA : any;
+  listA: any[] = [];
   serviceList:any;
 
   take : Take = {
+    Serviceid:'',            
     Pincode : '',
     State:'',
     City:'',
@@ -68,15 +69,53 @@ export class CreateComponent {
     console.log(this.isEditClicked);
  
     let s = localStorage.getItem("editValue")??"";
-    let retArray = JSON.parse(s);
-    console.log("editform", retArray[0]);
-    this.take = retArray[0];
+    let cat = localStorage.getItem("category")??'';
+    const data = {
+      Category : cat,
+    };
+    if(s.length>0){
+     
+      let retArray = JSON.parse(s);
+      console.log("editform", retArray[0]);
+      
+      this.loginServices.getCategory(data).subscribe({
+        next:(res)=>{
+          let s = res[0]['Category'];
+          this.listA.push(res[0])
+          // this.listA = [res[0]];
+          // this.serviceList = res;
+          console.log('this.serviceList', this.serviceList);
+          this.loginServices.getServices().subscribe({
+            next:(result)=>{
+              for(let i=0;i<result.length;i++){
+                if(result[i]['Category'] != cat){
+                  
+                  this.listA.push(result[i]);
+                  // this.serviceList = [...result];
+                }
+              }
+              
+              // this.serviceList = res;
+             
+            }
+          })
+          console.log('listA ifff', this.listA);
+          
+          this.serviceList = this.listA;
+        }
+      })
+      
+      this.take = retArray[0];
+    }else{
+      localStorage.setItem("editValue","");
     this.loginServices.getServices().subscribe({
       next:(res)=>{
+        console.log("res", res);
         this.serviceList = res;
-      }
 
-    })  
+      }
+    })
+  }  
   }
 
   selectedTeam = '';
@@ -90,6 +129,7 @@ export class CreateComponent {
       next:(res) => {
         console.log('Take service', res);
         this.onTakeServiceSubmit = true;
+        localStorage.setItem("editValue","");
       },
       error: (e) => console.error(e)
     });

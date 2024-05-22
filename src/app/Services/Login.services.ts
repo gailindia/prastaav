@@ -38,6 +38,10 @@ export class LoginService{
     }
     
 
+    getCategory(data:any):Observable<any>{
+        return this.http.post(`${baseUrl}/GetCategory`,data);
+    }
+
     deleteFromCart(Service_id:any):Observable<any>{
         const options = {
             body: {
@@ -48,11 +52,6 @@ export class LoginService{
     }
 
     editFromCart(Service_id:any):Observable<any>{
-        // const options = {
-        //     body: {
-        //       Serviceid : Service_id,
-        //     },
-        //   };
         console.log(Service_id);
         return this.http.post(`${baseUrl}/editFromCart`,Service_id);
     }
