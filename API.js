@@ -13,7 +13,7 @@ app.use(cors({origin:true}));
 
 
 
-const hostname = '192.168.1.101';
+const hostname = '192.168.1.100';
 
 const port = 4040;
 
@@ -253,36 +253,18 @@ const con = mysql.createConnection({
   app.get('/api/getSeeAll/:service', (req, res) => {
   // Access parameters using req.params
   const service = req.params.service;
-  const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup, servicehdr.Mobile FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid where servicehdr.Service = ? and servicehdr.S_Status ="Verified" ';
+  const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup, servicehdr.Mobile FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid where servicehdr.Service = ? ';//and servicehdr.S_Status ="Verified" 
   con.query(query,[service],(error,results) =>{
+    console.log("TEST DATA  ",results);
     if(error){
       res.status(500).send(error);  
     }
     else{
+      console.log("TEST DATA");
       res.json(results);
     }
   })
   });
-
-app.get('/api/getSeeAll/:service',(req,res)=>{
-  const service = req.params.service;
-  const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup, servicehdr.Mobile FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid where servicehdr.Service = ?';
-  con.query(query,[service],(error,results) =>{
-    if(error){
-      res.status(500).send(error);  
-    }
-    else{
-      res.json(results);
-    }
-  })
-});
-
-
-
-
-
-
-
 
 
 

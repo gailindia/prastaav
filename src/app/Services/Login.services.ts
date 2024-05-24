@@ -5,7 +5,7 @@ import { Login } from "../models/login.model";
 
 
 
-const baseUrl = 'http://192.168.1.101:4040/api';
+const baseUrl = 'http://192.168.1.100:4040/api';
 
 const pincodeUrl = 'https://api.postalpincode.in/pincode';
 
@@ -65,6 +65,10 @@ export class LoginService{
         return this.http.post(`${baseUrl}/AdminVerifyOTP`,data);
     }
 
+    getSellAll(take:any):Observable<any>{
+        console.log(`${baseUrl}/getSeeAll/:${take}`);
+        return this.http.get(`${baseUrl}/getSeeAll/${take}`);
+    }
     //API for AdminHome
     adminhometabledata():Observable<any>{
         return this.http.get(`${baseUrl}/getAdminDashboardService`);

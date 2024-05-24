@@ -17,7 +17,7 @@ export class SeeallComponent {
   }
 
   getAllSeeAll(){
-    this.loginService.getSellAll("take").subscribe({
+    this.loginService.getSellAll("Take").subscribe({
       next:(res)=>{
         this.itemsTake = res;
         console.log(res);
