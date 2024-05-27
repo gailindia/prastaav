@@ -15,13 +15,44 @@
 
 
       <button  class="btn btn-success" (click)="onClickEditFromCart(ca.Serviceid)">Edit</button>&nbsp;
-      <button  class="btn btn-success" (click)="openDialog('0ms', '0ms')" >Pay To Verify</button>&nbsp;
+      <button type = "button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal" >Pay To Verify</button>&nbsp;
       <button  class="btn btn-success" (click)="onClickOnDelete(ca.Serviceid)">Delete</button>
-
+  <!-- The Modal -->
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Payment</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+          Service Id = {{ca.Serviceid}}
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="onClickPayLater(ca.Serviceid)">Pay</button>
+          <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="reloadCartComponent()">Pay Later</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
     </li>
     }
   </ul>
+
+
+
+
 </div>
+
+
+
 </body>
 </html>
 

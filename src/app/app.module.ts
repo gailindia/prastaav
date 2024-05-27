@@ -16,7 +16,6 @@ import { FormsModule } from '@angular/forms';
 import { AdminComponent } from './admin/admin.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatDialogModule } from '@angular/material/dialog';
-import { DialogAnimationsExampleDialogComponent } from './dialog-animations-example-dialog/dialog-animations-example-dialog.component';
 import { AdminhomeComponent } from './adminhome/adminhome.component';
 import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 
@@ -32,7 +31,6 @@ import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
     HomeScreenComponent,
     AdminComponent,
     HomeScreenComponent,
-    DialogAnimationsExampleDialogComponent,
     AdminhomeComponent,
     AlertDialogComponent
 

@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { GetCart } from '../models/take.model';
 import { LoginService } from '../Services/Login.services';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogAnimationsExampleDialogComponent } from '../dialog-animations-example-dialog/dialog-animations-example-dialog.component';
 
 @Component({
   selector: 'app-cart',
@@ -11,6 +9,7 @@ import { DialogAnimationsExampleDialogComponent } from '../dialog-animations-exa
   styleUrl: './cart.component.css'
 })
 export class CartComponent {
+[x: string]: any;
  
 form: any;
     servicesCart : GetCart={
@@ -27,14 +26,17 @@ form: any;
 
     cartList:any;
 
-    constructor(private getServicesCart:LoginService,private router:Router,public dialog: MatDialog){};
+    constructor(private getServicesCart:LoginService,private router:Router){};
 
-    openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
-      this.dialog.open( DialogAnimationsExampleDialogComponent, {
-        width: '250px',
-        enterAnimationDuration,
-        exitAnimationDuration,
-      });
+    showDialog = false;
+    alertMessage = 'This is an alert message!';
+  
+    openAlertDialog() {
+      this.showDialog = true;
+    }
+
+    closeAlertDialog() {
+      this.showDialog = false;
     }
 
     ngOnInit():void {
@@ -91,12 +93,34 @@ form: any;
         error: (e) => console.error(e)
       });
     }
+
+    onClickPayLater(Service_id:any){
+      const data = {
+        serviceid : Service_id,
+        Charges_paid:"10"
+      };
+      console.log(data);
+      this.getServicesCart.cartPayLater(data).subscribe({
+        next:(res) => {
+          console.log(res);
+          this.reloadCartComponent();
+        },
+        error: (e) => console.error(e)
+      });
+    }
     
     reloadCreateComponent() {
       let currentUrl = this.router.url;
           this.router.routeReuseStrategy.shouldReuseRoute = () => false;
           this.router.onSameUrlNavigation = 'reload';
           this.router.navigate([`create`]);
+    }
+
+    reloadCartComponent() {
+      let currentUrl = this.router.url;
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+          this.router.onSameUrlNavigation = 'reload';
+          this.router.navigate([`cart`]);
     }
 
 

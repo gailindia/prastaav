@@ -178,7 +178,7 @@ const con = mysql.createConnection({
  
    //GET API for GROUP
   app.get('/api/getallservices', (req, res) => {
-    const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid';
+    const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid where servicehdr.S_Status = "Save"';
     // Execute the query
     con.query(query, (error, results) => {
       if (error) {
@@ -266,6 +266,18 @@ const con = mysql.createConnection({
   })
   });
 
+  app.post('/api/cartPay', (req,res)=>{
+    const {serviceid,Charges_paid } = req.body;
+    const query = 'update servicehdr set S_Status = "Paid" , Charges_paid = ? where serviceid = ?';
+    con.query(query,[Charges_paid,serviceid],(error,resilts)=>{
+      if(error){
+        res.status(500).send(error);
+      }
+      else{
+        res.json({ message: 'Updated successfully'});
+      }
+    })
+  });
 
 
 

@@ -69,10 +69,17 @@ export class LoginService{
         console.log(`${baseUrl}/getSeeAll/:${take}`);
         return this.http.get(`${baseUrl}/getSeeAll/${take}`);
     }
+
+    cartPayLater(data:any):Observable<any>{
+        return this.http.post(`${baseUrl}/cartPay`,data);
+    }
     //API for AdminHome
     adminhometabledata():Observable<any>{
         return this.http.get(`${baseUrl}/getAdminDashboardService`);
     }
 
+    adminVerifiedService(serviceid:any):Observable<any>{
+        return this.http.post(`${baseUrl}/adminVerified`,serviceid);
+    }
 
 }

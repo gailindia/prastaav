@@ -11,24 +11,8 @@ import { Take } from '../models/take.model';
 export class AdminhomeComponent {
   users: Take[] = [];
   
-
-  // users = [
-  //   { id: 1, name: 'John Doe', Gender: 'M', age: 30, Profession: "Developer", Pincode: 110025, Service: "Give",Country: "India",City: "Delhi",Area: "Delhi",State: "Delhi",SpecialNote: "Test",DocLink:"Test",LocationLink:"test",AnySpecialGroup:"Test"},
-  //   { id: 2, name: 'Jane Smith', Gender: 'M', age: 25,Profession: "Developer", Pincode: 110025, Service: "Give",Country: "India",City: "Delhi",Area: "Delhi",State: "Delhi",SpecialNote: "Test",DocLink:"Test",LocationLink:"test",AnySpecialGroup:"Test"},
-  //   { id: 3, name: 'Alice Johnson', Gender: 'F', age: 35,Profession: "Developer", Pincode: 110025, Service: "Give",Country: "India",City: "Delhi",Area: "Delhi",State: "Delhi",SpecialNote: "Test",DocLink:"Test",LocationLink:"test",AnySpecialGroup:"Test"},
-  //   // Add more data as needed
-  // ];
   constructor(private getServicesCart:LoginService,private router:Router){};
-  showDialog = false;
-  alertMessage = 'This is an alert message!';
 
-  openAlertDialog() {
-    this.showDialog = true;
-  }
-
-  closeAlertDialog() {
-    this.showDialog = false;
-  }
   ngOnInit(): void {
     this.getAdminHomeList();
     
@@ -49,9 +33,16 @@ export class AdminhomeComponent {
   }
 
   // Method to pay to verify user
-  payToVerify(user: any) {
-    console.log('Pay to verify user:', user);
-    // Add your logic here to handle payment
+  payToVerify(Service_id: any) {
+    console.log('Pay to verify user:', Service_id);
+    const data = {
+      serviceid:Service_id
+    }
+    this.getServicesCart.adminVerifiedService(data).subscribe({
+      next:(res) => {
+
+      },error: (e) => console.error(e)
+    })
   }
 
   
