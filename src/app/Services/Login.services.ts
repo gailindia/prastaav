@@ -68,4 +68,11 @@ export class LoginService{
         return this.http.get(`${baseUrl}/getAdminDashboardService`);
     }
 
+    adminReject(data: any): Observable<any>{
+        return this.http.post(`${baseUrl}/adminReject`,data)
+    }
+    adminVerify(data: any): Observable<any>{
+        return this.http.post(`${baseUrl}/adminVerified`,data)
+    }
+
 }

@@ -385,6 +385,33 @@ const con = mysql.createConnection({
     })
   });
 
+ app.post('/api/adminVerified', (req,res)=>{
+    const {serviceid} = req.body;
+    const query = 'update servicehdr set S_Status = "Verified" where Serviceid = ? ';
+    con.query(query,[serviceid],(error,results) => {
+      if(error){
+        res.status(500).send(error);
+      }
+      else{
+        res.json({ message: 'Verified successfully'});
+      }
+    })
+  });
+ 
+  app.post('/api/adminReject', (req,res)=>{
+    const {serviceid} = req.body;
+    const query = 'update servicehdr set S_Status = "Save" where Serviceid = ? ';
+    con.query(query,[serviceid],(error,results) => {
+      if(error){
+        res.status(500).send(error);
+      }
+      else{
+        res.json({ message: 'Updated successfully' });
+      }
+    })
+  });
+ 
+
 
   
 
