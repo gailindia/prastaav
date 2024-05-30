@@ -20,6 +20,7 @@ export class Take {
     Category?:string;
     Charges_paid?:number;
     MobileNo?:string;
+    visibility?:boolean;
     }
 
     export class services{

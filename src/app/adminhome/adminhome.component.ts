@@ -29,18 +29,27 @@ export class AdminhomeComponent {
 
   rejectUser(user: any) {
     console.log('User rejected:', user);
+    this.reloadComponent();
     // Add your logic here to handle rejection
   }
-
+  reloadComponent() {
+    console.log('Pay to verify user:', this.router.url);
+    let currentUrl = this.router.url;
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate([`adminhome`]);
+    }
   // Method to pay to verify user
   payToVerify(Service_id: any) {
-    console.log('Pay to verify user:', Service_id);
+
     const data = {
       serviceid:Service_id
     }
+    console.log('Pay to verify user:', data);
     this.getServicesCart.adminVerifiedService(data).subscribe({
       next:(res) => {
-
+        console.log('Accepted USER:', res);
+          this.reloadComponent();
       },error: (e) => console.error(e)
     })
   }

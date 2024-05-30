@@ -12,11 +12,17 @@
       <p class="card-text">State: {{ ca.State }}</p>
       <p class="card-text">City: {{ ca.City }}</p>  
       <p class="card-text">Charges: {{ ca.Charges }}</p> 
-
-
-      <button  class="btn btn-success" (click)="onClickEditFromCart(ca.Serviceid)">Edit</button>&nbsp;
-      <button type = "button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal" >Pay To Verify</button>&nbsp;
-      <button  class="btn btn-success" (click)="onClickOnDelete(ca.Serviceid)">Delete</button>
+      <div >
+        <button  class="btn btn-success">Accept</button>&nbsp;
+        <button  class="btn btn-success">Reject</button>&nbsp;
+      </div>
+      @if (ca.S_Status == "Verified" || ca.S_Status == "Save") {
+        
+      }@else if(ca.S_Status == "Save"){
+        <button  class="btn btn-success" (click)="onClickEditFromCart(ca.Serviceid)">Edit</button>&nbsp;
+        <button type = "button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal" >Pay To Verify</button>&nbsp;
+        <button  class="btn btn-success" (click)="onClickOnDelete(ca.Serviceid)">Delete</button>
+      }
   <!-- The Modal -->
   <div class="modal" id="myModal">
     <div class="modal-dialog">

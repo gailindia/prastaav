@@ -133,6 +133,7 @@ export class CreateComponent {
     
     this.take.Category = this.selectedTeam;
     console.log(this.take);
+    console.log(this.take.Serviceid);
     this.loginServices.postTakeServiceForm(this.take).subscribe({
       next:(res) => {
         console.log('Take service', res);
