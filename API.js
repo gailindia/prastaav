@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.use(cors({origin:true}));
 
 
-const hostname = '192.168.1.104';
+const hostname = '192.168.1.102';
 
 const port = 4040;
 
@@ -169,9 +169,6 @@ const con = mysql.createConnection({
                 }             
           });        
         }
-
-        console.log(till_date);
-
       Serviceid = "SDK"+ currentYear + currentHour + currentMonth + currentMinute + currentDay + lastThreeDigits + currentSecond;
       console.log(Serviceid);
 
@@ -185,7 +182,6 @@ const con = mysql.createConnection({
             Service = result[0]['Service'];
             Charges = result[0]['ChargePerDay'];
 
-
           con.query('INSERT INTO servicehdr (Serviceid,Sector,Service,Category,Charges,Charges_paid,Created_On,Valid_till,S_Status) VALUES (?,?,?,?,?,?,?,?,?)',[Serviceid,Sector,Service,Category,Charges,Charges_paid,dateTimeObject,till_date,"Save" ], (err, result) => {
           if (err) throw err;
           else{
@@ -194,11 +190,8 @@ const con = mysql.createConnection({
               if (err) throw err;
             res.json({ message: 'Inserted successfully'});
             });
-
           }   
         });
-
-
           }
         }
       });
@@ -296,6 +289,7 @@ const con = mysql.createConnection({
   });
 
 
+ 
 
 
 
@@ -385,6 +379,20 @@ const con = mysql.createConnection({
       }
     })
   });
+
+  app.post('/api/adminReject', (req,res)=>{
+    const {serviceid} = req.body;
+    const query = 'update servicehdr set S_Status = "Save" where Serviceid = ?';
+    con.query(query,[serviceid],(error,results) => {
+      if(error){
+        res.status(500).send(error);
+      }
+      else{
+        res.json({ message: 'Updated successfully' });
+      }
+    })
+  });
+
 
 
 
