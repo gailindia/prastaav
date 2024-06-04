@@ -13,7 +13,7 @@ app.use(cors({origin:true}));
 
 
 
-const hostname = '192.168.1.102';
+const hostname = '0.0.0.0';
 
 const port = process.env.PORT || 4000;;
 
