@@ -64,9 +64,19 @@ export class LoginService{
         return this.http.post(`${baseUrl}/AdminVerifyOTP`,data);
     }
     //API for AdminHome
-    adminhometabledata():Observable<any>{
-        return this.http.get(`${baseUrl}/getAdminDashboardService`);
+    adminhometabledata(Paid:any):Observable<any>{
+        return this.http.get(`${baseUrl}/getAdminDashboardService/${Paid}`);
     }
+
+
+    // getSellAll(take:any):Observable<any>{
+    //     console.log(`${baseUrl}/getSeeAll/${take}`);
+    //     return this.http.get(`${baseUrl}/getSeeAll`);
+    // }
+
+
+
+
 
     adminReject(data: any): Observable<any>{
         return this.http.post(`${baseUrl}/adminReject`,data)

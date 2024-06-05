@@ -1,5 +1,17 @@
 <div class="container">
     <h2>User Table</h2>
+    <div>
+      <button (click)="selectFilter('all')">All</button>
+      <button (click)="selectFilter('verified')">Verified</button>
+      <button (click)="selectFilter('unverified')">Unverified</button>
+    </div>
+    <!-- <div class="filters">
+      <div class="filter-chip" *ngFor="let filter of filters; let i = index">
+        {{ filter }}
+        <button (click)="removeFilter(i)">x</button>
+      </div>
+      <button (click)="addFilter()">Add filter</button>
+    </div> -->
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -48,7 +60,7 @@
             <!-- Button to pay to verify -->
             <!-- <button (click)="openAlertDialog()">Show Alert</button> -->
             <!-- <button class="btn btn-success" (click)="payToVerify(user)">Pay to Verify</button> -->
-          <button type = "button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal" >Pay To Verify</button>&nbsp;
+          <button type = "button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal" > Verify</button>&nbsp;
             
             <!-- Modal -->
             <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
@@ -86,7 +98,7 @@
                     <p>Are you sure you want to verify this request? </p>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="reloadComponent()">No</button>
                     <button class="btn btn-danger" (click)="payToVerify(user.Serviceid)" data-bs-dismiss="modal">Yes</button>
                     
                     <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button> -->

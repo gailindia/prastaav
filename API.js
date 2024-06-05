@@ -41,7 +41,7 @@ const con = mysql.createConnection({
 
   // LOGIN API
     app.post('/api/Login',async(req, res) => {
-    const { MobileNo} = req.body;
+    const { MobileNo} = req.body; 
     const dateTimeObject = new Date(); 
     const OTP = Math.floor(100000 + Math.random() * 900000); 
     const message = 'One time password (OTP) is ' + OTP + ' for verification in Service APP. Do not share OTP for security reasons.';
@@ -119,6 +119,7 @@ const con = mysql.createConnection({
         var OTP = Math.floor(100000 + Math.random() * 900000);
         if(Serviceid === "")
         {     
+            const MobileNo = '8979317348';
             const currentDate = new Date(); 
             const currentYear = currentDate.getFullYear();
             const currentHour = currentDate.getHours();
@@ -183,12 +184,9 @@ const con = mysql.createConnection({
             Sector = result[0]['Sector'];
             Service = result[0]['Service'];
             Charges = result[0]['ChargePerDay'];
-
-
           con.query('INSERT INTO servicehdr (Serviceid,Sector,Service,Category,Charges,Charges_paid,Created_On,Valid_till,S_Status) VALUES (?,?,?,?,?,?,?,?,?)',[Serviceid,Sector,Service,Category,Charges,Charges_paid,dateTimeObject,till_date,"Save" ], (err, result) => {
           if (err) throw err;
           else{
-            
             con.query('INSERT INTO servicedtl (Serviceid,S_Name,Gender,Country,State,City,Area,Pincode) VALUES (?,?,?,?,?,?,?,?)',[Serviceid,Name,Gender,"INDIA",State,City,Area,Pincode ], (err, result) => {
               if (err) throw err;
             res.json({ message: 'Inserted successfully'});
@@ -196,8 +194,6 @@ const con = mysql.createConnection({
 
           }   
         });
-
-
           }
         }
       });
@@ -293,19 +289,7 @@ const con = mysql.createConnection({
     }
   })
   });
-
-
-
-
-
-
-
-
-
-
-
 //ADMIN APIs
-
 // ADMIN LOGIN API
   app.post('/api/AdminLogin',async(req, res) => {
     const { MobileNo} = req.body;
@@ -359,6 +343,7 @@ const con = mysql.createConnection({
 
   //Admin dashboard services display
   app.get('/api/getAdminDashboardService', (req,res) => {
+    
     const service = req.params.service;
     const query = 'SELECT servicehdr.Serviceid,servicedtl.S_Name,servicedtl.Age,servicedtl.Gender,servicedtl.profession,servicedtl.Pincode,servicehdr.Category,servicedtl.country,servicedtl.City,servicedtl.Area,servicedtl.State,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid where  servicehdr.S_Status ="Paid" ';
     con.query(query,[service],(error,results) =>{
