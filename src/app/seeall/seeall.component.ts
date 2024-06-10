@@ -10,6 +10,7 @@ export class SeeallComponent {
  
   items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', 'Item 8'];
   itemsTake : any;
+
   constructor(private loginService:LoginService){}
 
   showButton: boolean = false;
@@ -17,10 +18,14 @@ export class SeeallComponent {
   ngOnInit():void {
     console.log("INSIDE SELL ALL");
     this.getAllSeeAll();
+  
   }
 
   getAllSeeAll(){
-    this.loginService.getSellAll("Take").subscribe({
+    const data = {
+      Mobile : `${localStorage.getItem("MobileNo")}`,
+    };
+    this.loginService.getSellAll(data).subscribe({
       next:(res)=>{
         this.itemsTake = res;
         console.log(res);
@@ -28,6 +33,7 @@ export class SeeallComponent {
       error: (e) => console.error(e)
     });
   }
+
 
 
 // JavaScript code
@@ -48,4 +54,26 @@ changeText(service_id:any,index:any) {
  })
 }
 
+joinService(SenderId:any, index:any){
+  this.showButton = !this.showButton;
+  this.itemsTake[index].visibility = true;
+  const data = {
+   SenderId : "",
+  ReceiverId:SenderId,
+  RequestType : "Requested",
+  Status : "Send Invite",
+ };
+
+ console.log("DATA IN JOIN SERVICE",data);
+
+this.loginService.joinServices(data).subscribe({
+  next:(res)=>{
+  console.log("Join Service",res);
+  }
+})
+
 }
+
+}
+
+

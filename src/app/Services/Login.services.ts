@@ -5,7 +5,9 @@ import { Login } from "../models/login.model";
 
 
 
-const baseUrl = 'http://192.168.1.102:4040/api';
+// const baseUrl = 'http://192.168.1.100:4040/api';
+
+const baseUrl = 'http://prastaav.com/api';
 
 const pincodeUrl = 'https://api.postalpincode.in/pincode';
 
@@ -35,8 +37,8 @@ export class LoginService{
         return this.http.post(`${baseUrl}/takeservice`,data);
     }
 
-    getServicesCart():Observable<any>{
-        return this.http.get(`${baseUrl}/getallservices`);
+    getServicesCart(Mobile:any):Observable<any>{
+        return this.http.get(`${baseUrl}/getallservices/${Mobile}`);
     }
     
 
@@ -65,9 +67,9 @@ export class LoginService{
         return this.http.post(`${baseUrl}/AdminVerifyOTP`,data);
     }
 
-    getSellAll(take:any):Observable<any>{
-        console.log(`${baseUrl}/getSeeAll/:${take}`);
-        return this.http.get(`${baseUrl}/getSeeAll/${take}`);
+    getSellAll(data:any):Observable<any>{
+        console.log(`${baseUrl}/getSeeAll/${data}`);
+        return this.http.post(`${baseUrl}/getSeeAll`,data);
     }
 
     cartPayLater(data:any):Observable<any>{
@@ -84,6 +86,14 @@ export class LoginService{
 
     adminVerifiedService(serviceid:any):Observable<any>{
         return this.http.post(`${baseUrl}/adminVerified`,serviceid);
+    }
+
+    joinServices(data:any):Observable<any>{
+        return this.http.post(`${baseUrl}/joinService`,data);
+    }
+
+    getJoinRequests():Observable<any>{
+        return this.http.get(`${baseUrl}/getJoinRequests`)
     }
 
 }

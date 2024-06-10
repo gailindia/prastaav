@@ -5,6 +5,7 @@ const axios = require('axios');
 const cors = require("cors");
 const date = require('date-and-time');
 const { isEmpty } = require('rxjs');
+const { default: test } = require('node:test');
 
 const app = express();
 app.use(express.json());
@@ -13,7 +14,7 @@ app.use(cors({origin:true}));
 
 
 
-const hostname = '192.168.1.102';
+const hostname = '192.168.1.100';
 
 const port = 4040;
 
@@ -101,7 +102,7 @@ const con = mysql.createConnection({
     const { service} = req.body;
         // Execute the query
         // con.query('select * from services where service =  ?',[service], (error, results) => {
-          con.query('select * from services where service =  ?',["Take"], (error, results) => {  
+          con.query('select * from services ', (error, results) => {  
         if (error) {
             res.status(500).send(error);
           } else {
@@ -121,7 +122,7 @@ const con = mysql.createConnection({
         var OTP = Math.floor(100000 + Math.random() * 900000);
         if(Serviceid === "")
         {   
-            const MobileNo = '7987593871';  
+            // const MobileNo = '7987593871';  
             const currentDate = new Date(); 
             const currentYear = currentDate.getFullYear();
             const currentHour = currentDate.getHours();
@@ -250,21 +251,42 @@ const con = mysql.createConnection({
     });  
   })
 
-  app.get('/api/getSeeAll/:service', (req, res) => {
-  // Access parameters using req.params
-  const service = req.params.service;
-  const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup, servicehdr.Mobile FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid where servicehdr.Service = ? ';//and servicehdr.S_Status ="Verified" 
-  con.query(query,[service],(error,results) =>{
-    console.log("TEST DATA  ",results);
-    if(error){
-      res.status(500).send(error);  
-    }
-    else{
-      console.log("TEST DATA");
-      res.json(results);
-    }
-  })
-  });
+app.post('/api/getSeeAll', async (req, res) => {
+  const { Mobile } = req.body;
+  try {
+      const result1 = await new Promise((resolve, reject) => {
+          con.query('select distinct Category from servicehdr where Mobile = ?', [Mobile], (error, result1) => {
+              if (error) {
+                  reject(error);
+              } else {
+                  resolve(result1);
+              }
+          });
+      });
+
+      let List = [];
+      for (const element of result1) {
+          const results = await new Promise((resolve, reject) => {
+              const query = 'SELECT servicehdr.Category, servicehdr.Serviceid,servicehdr.service, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup, servicehdr.Mobile FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid where servicehdr.S_Status ="Verified" and servicehdr.Category= ?';
+              con.query(query, [element.Category], (error, results) => {
+                  if (error) {
+                      reject(error);
+                  } else {
+
+                      resolve(results);
+                  }
+              });
+          });
+          
+          List.push(...results);
+      }
+      console.log("FINAL DATA", List);
+      return res.json(List);
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
   app.post('/api/cartPay', (req,res)=>{
     const {serviceid,Charges_paid } = req.body;
@@ -281,6 +303,58 @@ const con = mysql.createConnection({
 
 
 
+
+
+  app.post('/api/joinService',(req,res)=>{
+    const{SenderId,ReceiverId,RequestType,Status,Mobile,Category} = req.body;
+    const dateTimeObject = new Date(); 
+    query1 = 'select serviceid,category from servicehdr where Mobile = ? and category = ?';
+    con.query(query1,[Mobile,Category],(error,results)=>{
+      if(error){res.status(500).send(error);}
+      else{
+        const senderid = results[0]['ServiceId'];
+        query = 'insert into serviceflow(SenderId,ReceiverId,RequestType,RequestDate,Status) values(?,?,?,?,?)';
+        con.query(query,[SenderId,ReceiverId,RequestType,dateTimeObject,Status],(error,results)=>{
+          console.log(res.query);
+          if(error){
+            res.status(500).send(error);
+          }
+          else{
+            res.json({ message: 'Inserted successfully'});
+          }
+        })
+      }
+    })  
+  });
+
+  app.get('/api/getJoinRequests',(req,res)=>{
+    query = 'SELECT servicehdr.Serviceid,servicehdr.service, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup, servicehdr.Mobile  FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid INNER JOIN serviceflow ON servicehdr.Serviceid=serviceflow.Senderid where servicehdr.S_Status ="Verified"';
+    con.query(query,(error,results)=>{
+      console.log(res.query);
+      if(error){
+        res.status(500).send(error);
+      }
+      else{
+        res.json(results);
+      }
+    })
+  });
+
+
+  app.post('api/getCartAcknowledgement', (req,res)=>{
+    const{SenderId,ReceiverId,RequestType,Status} = req.body;
+    const dateTimeObject = new Date(); 
+    query = 'update serviceflow set Status =?';
+    con.query(query,[Status],(error,results)=>{
+      console.log(res.query);
+      if(error){
+        res.status(500).send(error);
+      }
+      else{
+        res.json({ message: 'Inserted successfully'});
+      }
+    })
+  });
 //ADMIN APIs
 
 // ADMIN LOGIN API

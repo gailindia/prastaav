@@ -34,18 +34,25 @@ sendOTP() : void{
   const data = {
     MobileNo : this.login.MobileNo,
   };
-  this.Submitted = true;
+
   
 
-  console.log(data);
+  console.log( "this.login.MobileNo", this.login.MobileNo);
 
+  
+  if( this.login.MobileNo == ''){
+    alert("Please fill number");
+  }else{
+    this.Submitted = true;
+    localStorage.setItem('MobileNo', `${this.login.MobileNo}`);//`${this.login.MobileNo}`
+  }
   // this.loginService.sendOTP(data).subscribe({
   //   next: (res) => {
   //     console.log('Login service', this.login.MobileNo);
   //     this.Submitted = true;
   //     this.isAdmin = false;
 
-  //     localStorage.setItem('MobileNo', `${this.login.MobileNo}`);
+      
   //     // this.loggedIn = true;
   //   },
     
