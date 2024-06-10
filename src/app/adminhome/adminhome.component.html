@@ -5,7 +5,7 @@
         <tr>
           <th>ID</th>
           <th>Name</th>
-          <th>Email</th>
+          <th>Gender</th>
           <th>Age</th>
           <th>Profession</th>
           <th>
@@ -26,14 +26,14 @@
       <tbody>
         <!-- Use *ngFor directive to loop through users array -->
         <tr *ngFor="let user of users">
-          <td>{{ user.id }}</td>
-          <td>{{ user.name }}</td>
+          <td>{{ user.Serviceid }}</td>
+          <td>{{ user.S_Name }}</td>
           <td>{{ user.Gender }}</td>
-          <td>{{ user.age }}</td>
+          <td>{{ user.Age }}</td>
           <td>{{ user.Profession}}</td>
           <td>{{ user.Pincode}}</td>
-          <td>{{ user.Service}}</td>
-          <td>{{ user.Country}}</td>
+          <td>{{ user.SpecialNote}}</td>
+          <td>{{ user.City}}</td>
           <td>{{ user.City}}</td>
           <td>{{ user.Area}}</td>
           <td>{{ user.State}}</td>
@@ -44,11 +44,12 @@
           <td>
             <!-- Button to reject -->
             <button class="btn btn-danger" (click)="rejectUser(user)">Reject</button>
-            <!-- Button to pay to verify -->
-            <button class="btn btn-success" (click)="payToVerify(user)">Pay to Verify</button>
+           
+            <button class="btn btn-success" (click)="payToVerify(user.Serviceid)">Verify</button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+
   

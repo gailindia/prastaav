@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,10 +12,13 @@ import { CreateComponent } from './create/create.component';
 import { CartComponent } from './cart/cart.component';
 import { SeeallComponent } from './seeall/seeall.component';
 import { HomeScreenComponent } from './home-screen/home-screen.component';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { FormsModule } from '@angular/forms';
 import { AdminComponent } from './admin/admin.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MatDialogModule } from '@angular/material/dialog';
 import { AdminhomeComponent } from './adminhome/adminhome.component';
+import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -28,14 +31,18 @@ import { AdminhomeComponent } from './adminhome/adminhome.component';
     SeeallComponent,
     HomeScreenComponent,
     AdminComponent,
-    AdminhomeComponent
+    HomeScreenComponent,
+    AdminhomeComponent,
+    AlertDialogComponent
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
-    
+    FormsModule,
+    MatDialogModule
+
   ],
   providers: [
     provideHttpClient(withFetch()),

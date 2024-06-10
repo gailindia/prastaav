@@ -36,30 +36,21 @@ sendOTP() : void{
   };
   this.Submitted = true;
   
+
+  console.log(data);
+
   // this.loginService.sendOTP(data).subscribe({
   //   next: (res) => {
   //     console.log('Login service', this.login.MobileNo);
   //     this.Submitted = true;
+  //     this.isAdmin = false;
 
-  this.loginService.sendOTP(data).subscribe({
-    next: (res) => {
-      console.log('Login service', this.login.MobileNo);
-      this.Submitted = true;
-      this.isAdmin = false;
-
-      localStorage.setItem('MobileNo', `${this.login.MobileNo}`);
-      // this.loggedIn = true;
-    },
-    
-    error: (e) => alert("Please fill number")
-  });
   //     localStorage.setItem('MobileNo', `${this.login.MobileNo}`);
   //     // this.loggedIn = true;
   //   },
-  //   error: (e) => console.error(e)
+    
+  //   error: (e) => alert("Please fill number")
   // });
-  
-
 }
 handleLinkClick() : void {
   this.isAdmin = true;

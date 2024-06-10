@@ -9,12 +9,9 @@ import { Router } from '@angular/router';
   styleUrl: './cart.component.css'
 })
 export class CartComponent {
-
-  
+[x: string]: any;
+ 
 form: any;
-items: string[] = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
-
-
     servicesCart : GetCart={
       Serviceid:'',
         Category:'',
@@ -30,6 +27,17 @@ items: string[] = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
     cartList:any;
 
     constructor(private getServicesCart:LoginService,private router:Router){};
+
+    showDialog = false;
+    alertMessage = 'This is an alert message!';
+  
+    openAlertDialog() {
+      this.showDialog = true;
+    }
+
+    closeAlertDialog() {
+      this.showDialog = false;
+    }
 
     ngOnInit():void {
       this.getCartServices();
@@ -85,11 +93,35 @@ items: string[] = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
         error: (e) => console.error(e)
       });
     }
+
+    onClickPayLater(Service_id:any){
+      const data = {
+        serviceid : Service_id,
+        Charges_paid:"10"
+      };
+      console.log(data);
+      this.getServicesCart.cartPayLater(data).subscribe({
+        next:(res) => {
+          console.log(res);
+          this.reloadCartComponent();
+        },
+        error: (e) => console.error(e)
+      });
+    }
     
     reloadCreateComponent() {
       let currentUrl = this.router.url;
           this.router.routeReuseStrategy.shouldReuseRoute = () => false;
           this.router.onSameUrlNavigation = 'reload';
           this.router.navigate([`create`]);
-      }
+    }
+
+    reloadCartComponent() {
+      let currentUrl = this.router.url;
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+          this.router.onSameUrlNavigation = 'reload';
+          this.router.navigate([`cart`]);
+    }
+
+
 }

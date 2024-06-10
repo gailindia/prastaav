@@ -11,9 +11,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(cors({origin:true}));
 
-
 const hostname = '192.168.1.102';
-
 const port = 4040;
 
 const con = mysql.createConnection({
@@ -119,7 +117,8 @@ const con = mysql.createConnection({
       try {     
         var OTP = Math.floor(100000 + Math.random() * 900000);
         if(Serviceid === "")
-        {     
+        {   
+            const MobileNo = '7987593871';  
             const currentDate = new Date(); 
             const currentYear = currentDate.getFullYear();
             const currentHour = currentDate.getHours();
@@ -131,7 +130,7 @@ const con = mysql.createConnection({
             const lastThreeDigits = MobileNo.slice(-3);
                 
             Id = "SDK"+ currentYear + currentHour + currentMonth + currentMinute + currentDay + lastThreeDigits + currentSecond;
-         
+         console.log("Service ID :: ",Id);
                 con.query('select * from services where Category =  ?',[Category], (error, result) => {
                   if (error) {
                     throw error;
@@ -141,7 +140,7 @@ const con = mysql.createConnection({
                       Sector = result[0]['Sector'];
                       Service = result[0]['Service'];
                       Charges = result[0]['ChargePerDay'];      
-                    con.query('INSERT INTO servicehdr (Serviceid,Sector,Service,Category,Charges,Charges_paid,Created_On,Valid_till,S_Status,Mobile) VALUES (?,?,?,?,?,?,?,?,?,?)',[Id,Sector,Service,Category,Charges,Charges_paid,dateTimeObject,till_date,"Save",Mobile ], (err, result) => {
+                    con.query('INSERT INTO servicehdr (Serviceid,Sector,Service,Category,Charges,Charges_paid,Created_On,Valid_till,S_Status,Mobile) VALUES (?,?,?,?,?,?,?,?,?,?)',[Id,Sector,Service,Category,Charges,Charges_paid,dateTimeObject,till_date,"Save",MobileNo ], (err, result) => {
                       if (err) throw err;
                       else{         
                         con.query('INSERT INTO servicedtl (Serviceid,S_Name,Gender,Age,Profession,Country,State,City,Area,Pincode,SpecialNote,DocLink,VideoLink,LocationLink,AnySpecialGroup) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[Id,S_Name,Gender,Age,Profession,"INDIA",State,City,Area,Pincode,SpecialNote,DocLink,VideoLink,LocationLink,AnySpecialGroup ], (err, result) => {
@@ -169,6 +168,7 @@ const con = mysql.createConnection({
                 }             
           });        
         }
+
       Serviceid = "SDK"+ currentYear + currentHour + currentMonth + currentMinute + currentDay + lastThreeDigits + currentSecond;
       console.log(Serviceid);
 
@@ -195,6 +195,7 @@ const con = mysql.createConnection({
           }
         }
       });
+
     } catch (error) {
       res.json({ message: 'Error calling URL:', error}); 
     }    
@@ -202,7 +203,7 @@ const con = mysql.createConnection({
  
    //GET API for GROUP
   app.get('/api/getallservices', (req, res) => {
-    const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid';
+    const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup,servicehdr.S_Status FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid ';
     // Execute the query
     con.query(query, (error, results) => {
       if (error) {
@@ -277,25 +278,32 @@ const con = mysql.createConnection({
   app.get('/api/getSeeAll/:service', (req, res) => {
   // Access parameters using req.params
   const service = req.params.service;
-  const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup, servicehdr.Mobile FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid where servicehdr.Service = ? and servicehdr.S_Status ="Verified" ';
+  const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup, servicehdr.Mobile FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid where servicehdr.Service = ? ';//and servicehdr.S_Status ="Verified" 
   con.query(query,[service],(error,results) =>{
+    console.log("TEST DATA  ",results);
     if(error){
       res.status(500).send(error);  
     }
     else{
+      console.log("TEST DATA");
       res.json(results);
     }
   })
   });
 
 
- 
-
-
-
-
-
-
+  app.post('/api/cartPay', (req,res)=>{
+    const {serviceid,Charges_paid } = req.body;
+    const query = 'update servicehdr set S_Status = "Paid" , Charges_paid = ? where serviceid = ?';
+    con.query(query,[Charges_paid,serviceid],(error,resilts)=>{
+      if(error){
+        res.status(500).send(error);
+      }
+      else{
+        res.json({ message: 'Updated successfully'});
+      }
+    })
+  });
 
 
 
@@ -355,7 +363,7 @@ const con = mysql.createConnection({
   //Admin dashboard services display
   app.get('/api/getAdminDashboardService', (req,res) => {
     const service = req.params.service;
-    const query = 'SELECT servicehdr.Serviceid,servicedtl.S_Name,servicedtl.Age,servicedtl.Gender,servicedtl.profession,servicedtl.Pincode,servicehdr.Category,servicedtl.country,servicedtl.City,servicedtl.Area,servicedtl.State,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup FROM servicehdr INNER JOIN servicedtl ONservicehdr.Serviceid=servicedtl.Serviceid where  servicehdr.S_Status ="Paid" ';
+    const query = 'SELECT servicehdr.Serviceid,servicedtl.S_Name,servicedtl.Age,servicedtl.Gender,servicedtl.profession,servicedtl.Pincode,servicehdr.Category,servicedtl.country,servicedtl.City,servicedtl.Area,servicedtl.State,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid where  servicehdr.S_Status ="Paid" ';
     con.query(query,[service],(error,results) =>{
       if(error){
         res.status(500).send(error);  
@@ -393,6 +401,29 @@ const con = mysql.createConnection({
     })
   });
 
+
+
+  app.post('/api/clicks',(req,res)=>{
+    const { Serviceid } = req.body;
+    const query1 ='select Clicks from servicehdr where Serviceid =?'
+    con.query(query1,[Serviceid], (error, result) => {
+      if (error) {
+        throw error;
+      } else {  
+        console.log('Clicks',result) ;
+        const query = 'update servicehdr set Clicks = ? where  Serviceid =?';
+        con.query(query,[result[0]['Clicks']+1,Serviceid], (error, result1) => {
+          if (error) {
+            throw error;
+          } else {
+            console.log('Clicks',result1) ;
+             res.json(result1);
+          }
+        });
+      }
+    });
+  });
+ 
 
 
 
