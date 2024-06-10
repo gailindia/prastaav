@@ -12,11 +12,7 @@
       <p class="card-text">State: {{ ca.State }}</p>
       <p class="card-text">City: {{ ca.City }}</p>  
       <p class="card-text">Charges: {{ ca.Charges }}</p> 
-      <div >
-        <button  class="btn btn-success">Accept</button>&nbsp;
-        <button  class="btn btn-success">Reject</button>&nbsp;
-      </div>
-      @if (ca.S_Status == "Verified" || ca.S_Status == "Save") {
+      @if (ca.S_Status == "Verified" || ca.S_Status == "Paid") {
         
       }@else if(ca.S_Status == "Save"){
         <button  class="btn btn-success" (click)="onClickEditFromCart(ca.Serviceid)">Edit</button>&nbsp;

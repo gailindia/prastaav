@@ -34,10 +34,13 @@ sendOTP() : void{
   const data = {
     MobileNo : this.login.MobileNo,
   };
-  this.Submitted = true;
   
-
-  console.log(data);
+  if( this.login.MobileNo == ''){
+    alert("Please fill number");
+  }else{
+    this.Submitted = true;
+    localStorage.setItem('MobileNo', `${this.login.MobileNo}`);//`${this.login.MobileNo}`
+  }
 
   // this.loginService.sendOTP(data).subscribe({
   //   next: (res) => {

@@ -33,13 +33,12 @@
       <p class="card-text">City: {{ item.City  }}</p>
       <p class="card-text">Charges: {{ item.Charges  }}</p>
        <div>
-        <button  *ngIf="item.visibility" id="mobileNum" >{{ item.Mobile }}</button>
-        <button *ngIf="!item.visibility" (click)="changeText(item.Serviceid,i)">Show Number</button>
-       </div>
-       
-      <button class="btn btn-success">Edit</button>&nbsp;
-      <button class="btn btn-success">Pay To Verify</button>&nbsp;
-      <button class="btn btn-success">Delete</button>
+        <button class="btn btn-success" *ngIf="item.visibility" id="mobileNum" >{{ item.Mobile }}</button>
+        <button class="btn btn-success" *ngIf="!item.visibility" (click)="changeText(item.Serviceid,i)">Show Number</button>
+        
+        &nbsp;<button class="btn btn-success">Join</button>
+      </div>
+      
       </li>
     }
 

@@ -11,8 +11,8 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(cors({origin:true}));
 
-const hostname = '192.168.1.102';
-const port = 4040;
+const hostname = '192.168.1.104';
+const port = process.env.PORT || 4000;
 
 const con = mysql.createConnection({
     host: "localhost",
@@ -108,99 +108,73 @@ const con = mysql.createConnection({
         });
   });
 
-  // LOGIN API
-  app.post('/api/takeservice',async(req, res) => {
+ // LOGIN API
+ app.post('/api/takeservice',async(req, res) => {
+ 
+  const { S_Name, Gender,Age, Profession, Pincode,State,City,Area,SpecialNote,DocLink,VideoLink,LocationLink,AnySpecialGroup,Category,Charges_paid, MobileNo, Serviceid} = req.body;
 
-      const { S_Name, Gender,Age, Profession, Pincode,State,City,Area,SpecialNote,DocLink,VideoLink,LocationLink,AnySpecialGroup,Category,Charges_paid, MobileNo, Serviceid} = req.body;
-
-      const dateTimeObject = new Date(); 
-      try {     
-        var OTP = Math.floor(100000 + Math.random() * 900000);
-        if(Serviceid === "")
-        {   
-            const MobileNo = '7987593871';  
-            const currentDate = new Date(); 
-            const currentYear = currentDate.getFullYear();
-            const currentHour = currentDate.getHours();
-            const currentMonth = currentDate.getMonth() + 1;
-            const currentMinute = currentDate.getMinutes();
-            const currentDay = currentDate.getDate();      
-            const currentSecond = currentDate.getSeconds();   
-            const till_date = date.addDays(dateTimeObject,30);
-            const lastThreeDigits = MobileNo.slice(-3);
-                
-            Id = "SDK"+ currentYear + currentHour + currentMonth + currentMinute + currentDay + lastThreeDigits + currentSecond;
-         console.log("Service ID :: ",Id);
-                con.query('select * from services where Category =  ?',[Category], (error, result) => {
-                  if (error) {
-                    throw error;
-                  } else {
-                    if(result.length == "1")
-                    {
-                      Sector = result[0]['Sector'];
-                      Service = result[0]['Service'];
-                      Charges = result[0]['ChargePerDay'];      
-                    con.query('INSERT INTO servicehdr (Serviceid,Sector,Service,Category,Charges,Charges_paid,Created_On,Valid_till,S_Status,Mobile) VALUES (?,?,?,?,?,?,?,?,?,?)',[Id,Sector,Service,Category,Charges,Charges_paid,dateTimeObject,till_date,"Save",MobileNo ], (err, result) => {
-                      if (err) throw err;
-                      else{         
-                        con.query('INSERT INTO servicedtl (Serviceid,S_Name,Gender,Age,Profession,Country,State,City,Area,Pincode,SpecialNote,DocLink,VideoLink,LocationLink,AnySpecialGroup) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[Id,S_Name,Gender,Age,Profession,"INDIA",State,City,Area,Pincode,SpecialNote,DocLink,VideoLink,LocationLink,AnySpecialGroup ], (err, result) => {
-                          if (err) throw err;
-                        res.json({ message: 'Inserted successfully'});
-                        });   
-                      }   
-                    });
-                    }
-                  }
-                });
-        }
-        else{
-          con.query('select * from servicedtl where Serviceid = ?',[Serviceid], (error,result1) => {
-            if (error) {
-              throw error;
-            } 
-            else
+  const dateTimeObject = new Date();
+  try {     
+    var OTP = Math.floor(100000 + Math.random() * 900000);
+    if(Serviceid === "")
+    {   
+        // const MobileNo = '7987593871';  
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentHour = currentDate.getHours();
+        const currentMonth = currentDate.getMonth() + 1;
+        const currentMinute = currentDate.getMinutes();
+        const currentDay = currentDate.getDate();      
+        const currentSecond = currentDate.getSeconds();   
+        const till_date = date.addDays(dateTimeObject,30);
+        const lastThreeDigits = MobileNo.slice(-3);
+            
+        Id = "SDK"+ currentYear + currentHour + currentMonth + currentMinute + currentDay + lastThreeDigits + currentSecond;
+     console.log("Service ID :: ",Id);
+            con.query('select * from services where Category =  ?',[Category], (error, result) => {
+              if (error) {
+                throw error;
+              } else {
+                if(result.length == "1")
                 {
-                  const updateQuery = 'UPDATE servicedtl SET S_Name = ? Gender = ?, Age = ?, Profession=?, Pincode =?, State=?, City=?, Area=?,SpecialNote=?,DocLink=?,VideoLink =?,LocationLink=?,AnySpecialGroup=? WHERE Serviceid = ?';                 
-                  const params = [S_Name, Gender, Age,Profession,Pincode,State,City,Area,SpecialNote,DocLink,VideoLink,LocationLink,AnySpecialGroup, Serviceid];
-                  con.query(updateQuery, params, (err, results) => {
-                    res.json({ message: 'Updated successfully'});
-                  });
-                }             
-          });        
-        }
-
-      Serviceid = "SDK"+ currentYear + currentHour + currentMonth + currentMinute + currentDay + lastThreeDigits + currentSecond;
-      console.log(Serviceid);
-
-      con.query('select * from services where Category =  ?',[Category], (error, result) => {
+                  Sector = result[0]['Sector'];
+                  Service = result[0]['Service'];
+                  Charges = result[0]['ChargePerDay'];      
+                con.query('INSERT INTO servicehdr (Serviceid,Sector,Service,Category,Charges,Charges_paid,Created_On,Valid_till,S_Status,Mobile) VALUES (?,?,?,?,?,?,?,?,?,?)',[Id,Sector,Service,Category,Charges,Charges_paid,dateTimeObject,till_date,"Save",MobileNo ], (err, result) => {
+                  if (err) throw err;
+                  else{         
+                    con.query('INSERT INTO servicedtl (Serviceid,S_Name,Gender,Age,Profession,Country,State,City,Area,Pincode,SpecialNote,DocLink,VideoLink,LocationLink,AnySpecialGroup) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[Id,S_Name,Gender,Age,Profession,"INDIA",State,City,Area,Pincode,SpecialNote,DocLink,VideoLink,LocationLink,AnySpecialGroup ], (err, result) => {
+                      if (err) throw err;
+                    res.json({ message: 'Inserted successfully'});
+                    });   
+                  }   
+                });
+                }
+              }
+            });
+    }
+    else{
+      con.query('select * from servicedtl where Serviceid = ?',[Serviceid], (error,result1) => {
         if (error) {
           throw error;
-        } else {
-          if(result.length == "1")
-          {
-            Sector = result[0]['Sector'];
-            Service = result[0]['Service'];
-            Charges = result[0]['ChargePerDay'];
-
-          con.query('INSERT INTO servicehdr (Serviceid,Sector,Service,Category,Charges,Charges_paid,Created_On,Valid_till,S_Status) VALUES (?,?,?,?,?,?,?,?,?)',[Serviceid,Sector,Service,Category,Charges,Charges_paid,dateTimeObject,till_date,"Save" ], (err, result) => {
-          if (err) throw err;
-          else{
-            
-            con.query('INSERT INTO servicedtl (Serviceid,S_Name,Gender,Country,State,City,Area,Pincode) VALUES (?,?,?,?,?,?,?,?)',[Serviceid,Name,Gender,"INDIA",State,City,Area,Pincode ], (err, result) => {
-              if (err) throw err;
-            res.json({ message: 'Inserted successfully'});
-            });
-          }   
-        });
-          }
         }
-      });
+        else
+            {
+              const updateQuery = 'UPDATE servicedtl SET S_Name = ? Gender = ?, Age = ?, Profession=?, Pincode =?, State=?, City=?, Area=?,SpecialNote=?,DocLink=?,VideoLink =?,LocationLink=?,AnySpecialGroup=? WHERE Serviceid = ?';                 
+              const params = [S_Name, Gender, Age,Profession,Pincode,State,City,Area,SpecialNote,DocLink,VideoLink,LocationLink,AnySpecialGroup, Serviceid];
+              con.query(updateQuery, params, (err, results) => {
+                res.json({ message: 'Updated successfully'});
+              });
+            }             
+      });        
+    }
+} catch (error) {
+  res.json({ message: 'Error calling URL:', error});
+}    
+});
 
-    } catch (error) {
-      res.json({ message: 'Error calling URL:', error}); 
-    }    
-  });
- 
+
+  
    //GET API for GROUP
   app.get('/api/getallservices', (req, res) => {
     const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup,servicehdr.S_Status FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid ';
@@ -256,8 +230,7 @@ const con = mysql.createConnection({
             } else {
               res.json(results);
             }
-          });
-          
+          });        
       }
     });     
   });
@@ -304,6 +277,26 @@ const con = mysql.createConnection({
       }
     })
   });
+
+
+
+  
+  app.post('/api/joinfromSeeAll', (req,res)=>{
+    const {serviceid, } = req.body;
+    const query = 'insert into ';
+    con.query(query,[Charges_paid,serviceid],(error,resilts)=>{
+      if(error){
+        res.status(500).send(error);
+      }
+      else{
+        res.json({ message: 'Updated successfully'});
+      }
+    })
+  });
+
+
+
+
 
 
 

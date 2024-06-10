@@ -20,7 +20,10 @@ export class SeeallComponent {
   }
 
   getAllSeeAll(){
-    this.loginService.getSellAll("Take").subscribe({
+    const data = {
+      Mobile : `${localStorage.getItem("MobileNo")}`,
+    };
+    this.loginService.getSellAll(data).subscribe({
       next:(res)=>{
         this.itemsTake = res;
         console.log(res);
@@ -28,7 +31,6 @@ export class SeeallComponent {
       error: (e) => console.error(e)
     });
   }
-
 
 // JavaScript code
 changeText(service_id:any,index:any) {   
@@ -40,12 +42,13 @@ changeText(service_id:any,index:any) {
   Serviceid : service_id,
 };
 
-
  this.loginService.clickCount(data).subscribe({
   next:(res)=>{
       console.log(res);
   }
  })
 }
+
+
 
 }
