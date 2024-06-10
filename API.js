@@ -14,9 +14,10 @@ app.use(cors({origin:true}));
 
 
 
+
 const hostname = '192.168.1.100';
 
-const port = 4040;
+const port = process.env.PORT || 4000;;
 
 const con = mysql.createConnection({
     host: "localhost",
