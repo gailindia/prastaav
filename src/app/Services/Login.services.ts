@@ -5,7 +5,7 @@ import { Login } from "../models/login.model";
 
 
 
-// const baseUrl = 'http://192.168.1.100:4040/api';
+// const baseUrl = 'http://192.168.1.100:4000/api';
 
 const baseUrl = 'http://prastaav.com/api';
 
@@ -68,7 +68,7 @@ export class LoginService{
     }
 
     getSellAll(data:any):Observable<any>{
-        console.log(`${baseUrl}/getSeeAll/${data}`);
+      
         return this.http.post(`${baseUrl}/getSeeAll`,data);
     }
 
@@ -89,11 +89,25 @@ export class LoginService{
     }
 
     joinServices(data:any):Observable<any>{
+        console.log("joinservice",data);
         return this.http.post(`${baseUrl}/joinService`,data);
     }
 
-    getJoinRequests():Observable<any>{
-        return this.http.get(`${baseUrl}/getJoinRequests`)
+    getJoinRequests(Mobile:any):Observable<any>{
+        return this.http.get(`${baseUrl}/getJoinRequests/${Mobile}`);
+    }
+
+    cartStatus(data:any):Observable<any>{
+        return this.http.post(`${baseUrl}/cartStatus`,data);
+    }
+
+    getPopUpData(data:any):Observable<any>{
+        console.log("getPopUpData",data);
+        return this.http.post(`${baseUrl}/getPopupData`,data);
+    }
+    
+    getMyReqData(Mobile:any):Observable<any>{
+        return this.http.get(`${baseUrl}/getMyReqData/${Mobile}`)
     }
 
 }

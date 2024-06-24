@@ -1,85 +1,145 @@
 <html lang="en">
 <body>
 
-<div class="container mt-3">
-  <h2>Cart</h2>
-  <ul class="list-group">
-    @for (ca of cartList; track ca.Serviceid; let i = $index) {
-    <li class="list-group-item" style="width: 25rem; margin-bottom: 30px;  float: left; ">
-      <h5 class="card-title">{{ ca.Category }}</h5>
-      <p class="card-text">Name : {{ ca.S_Name }}</p>
-      <p class="card-text">Gender: {{ ca.Gender }}</p>
-      <p class="card-text">State: {{ ca.State }}</p>
-      <p class="card-text">City: {{ ca.City }}</p>  
-      <p class="card-text">Charges: {{ ca.Charges }}</p> 
-  
-      @if (ca.S_Status == "Verified") {
-        <!-- <div >
-          <button  class="btn btn-success">Accept</button>&nbsp;
-          <button  class="btn btn-success">Reject</button>&nbsp;
-        </div> -->
-      }@else if(ca.S_Status == "Save"){
-        <button  class="btn btn-success" (click)="onClickEditFromCart(ca.Serviceid)">Edit</button>&nbsp;
-        <button type = "button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal" >Pay To Verify</button>&nbsp;
-        <button  class="btn btn-success" (click)="onClickOnDelete(ca.Serviceid)">Delete</button>
-      }
-  <!-- The Modal -->
-  <div class="modal" id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-  
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Payment</h4>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+  <div class="container mt-3">
+    <h2>Cart</h2>
+    <ul class="list-group">
+      @for (ca of cartList; track ca.Serviceid; let i = $index) {
+      <li class="list-group-item" style="width: 25rem; margin-bottom: 30px;  float: left; ">
+        <h5 class="card-title">{{ ca.Category }}</h5>
+        <p class="card-text">Name : {{ ca.S_Name }}</p>
+        <p class="card-text">Gender: {{ ca.Gender }}</p>
+        <p class="card-text">State: {{ ca.State }}</p>
+        <p class="card-text">City: {{ ca.City }}</p>  
+        <p class="card-text">Charges: {{ ca.Charges }}</p>
+        @if (ca.S_Status == "Verified") {      
+        }@else if(ca.S_Status == "Save"){
+          <button  class="btn btn-success" (click)="onClickEditFromCart(ca.Serviceid)">Edit</button>&nbsp;
+          <button type = "button" class="btn btn-sucsscess" data-bs-toggle="modal" data-bs-target="#myModal" >Pay To Verify</button>&nbsp;
+          <button  class="btn btn-success" (click)="onClickOnDelete(ca.Serviceid)">Delete</button>
+        }
+    <!-- The Modal -->
+    <div class="modal" id="myModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+   
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Payment</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+   
+          <!-- Modal body -->
+          <div class="modal-body">
+            Service Id = {{ca.Serviceid}}
+          </div>
+   
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="onClickPayLater(ca.Serviceid)">Pay</button>
+            <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="reloadCartComponent()">Pay Later</button>
+          </div>
+   
         </div>
-  
-        <!-- Modal body -->
-        <div class="modal-body">
-          Service Id = {{ca.Serviceid}}
-        </div>
-  
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="onClickPayLater(ca.Serviceid)">Pay</button>
-          <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="reloadCartComponent()">Pay Later</button>
-        </div>
-  
       </div>
     </div>
-  </div>
-    </li>
-    }
-  </ul>
-
-
-  <h2>Requested Items</h2>
-  <ul class="list-group">
-    @for (ca of joinResuest; track ca.Serviceid; let i = $index) {
-    <li class="list-group-item" style="width: 25rem; margin-bottom: 30px;  float: left; ">
-      <h5 class="card-title">{{ ca.Category }}</h5>
-      <p class="card-text">Name : {{ ca.S_Name }}</p>
-      <p class="card-text">Gender: {{ ca.Gender }}</p>
-      <p class="card-text">State: {{ ca.State }}</p>
-      <p class="card-text">City: {{ ca.City }}</p>  
-      <p class="card-text">Charges: {{ ca.Charges }}</p> 
-      <div >
-        <button  class="btn btn-success">Accept</button>&nbsp;
-        <button  class="btn btn-success">Reject</button>&nbsp;
-      </div>
-      @if (ca.S_Status == "Verified" || ca.S_Status == "Save") {
-
-      }@else if(ca.S_Status == "Save"){
-        <!-- <button  class="btn btn-success" (click)="onClickEditFromCart(ca.Serviceid)">Edit</button>&nbsp;
-        <button type = "button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal" >Pay To Verify</button>&nbsp;
-        <button  class="btn btn-success" (click)="onClickOnDelete(ca.Serviceid)">Delete</button> -->
+      </li>
       }
-    </li>
-  }
-</ul>
+    </ul>
+    <h2>Requested Items</h2>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>SenderId</th>
+          <th>SenderName</th>
+          <th>Mobile</th>
+          <th>SenderGender</th>
+          <th>Service</th>
+          <th>SenderCity</th>
+          <th>SenderArea</th>
+          <th>SenderState</th>
+          <th>ReceiverId</th>
+          <th>ReceiverName</th>
 
-
-</div>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Use *ngFor directive to loop through users array -->
+       
+        @for (user of joinResuest; track user.Serviceid; let i = $index) {
+        <tr>
+          <td>{{ user.Serviceid }}</td>
+          <td>{{ user.S_Name }}</td>
+          @if(user.Status == "Accepted"){
+            <td>{{ user.Mobile }}</td>
+          }@else {
+            <td>xxxxxxxxxx</td>
+          }
+         
+          <td>{{ user.Gender }}</td>
+          <td>{{ user.service }}</td>
+          <td>{{ user.City }}</td>
+          <td>{{ user.Area }}</td>
+          <td>{{ user.State }}</td>
+          <td>{{ user.Receiverid }}</td>
+          <td>{{ user.ReceiverName }}</td>
+        
+          @if(user.Status == "Accepted"){
+            <button  class="btn btn-success">Accepted</button>&nbsp;
+          }@else if(user.Status == "Rejected"){
+            <button  class="btn btn-success">Rejected</button>&nbsp;
+          }@else {
+            <div >
+              <button  class="btn btn-success" (click)="changeCartStatus('Accepted',user.Serviceid,user.Receiverid)">Accept</button>&nbsp;
+              <button  class="btn btn-success" (click)="changeCartStatus('Rejected',user.Serviceid,user.Receiverid)">Reject</button>&nbsp;
+            </div>
+          }
+         
+          @if (user.S_Status == "Verified" || user.S_Status == "Save") {
+     
+          }@else if(user.S_Status == "Save"){
+            <!-- <button  class="btn btn-success" (click)="onClickEditFromCart(ca.Serviceid)">Edit</button>&nbsp;
+            <button type = "button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal" >Pay To Verify</button>&nbsp;
+            <button  class="btn btn-success" (click)="onClickOnDelete(ca.Serviceid)">Delete</button> -->
+          }
+         
+        </tr>
+      }
+      </tbody>
+    </table>
+   
+    <h2>My Request Items</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Gender</th>
+        <th>Age</th>
+        <th>City</th>
+        <th>Area</th>
+        <th>State</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Use *ngFor directive to loop through users array -->
+     
+      @for (user of myRequest; track user.Serviceid; let i = $index) {
+      <tr>
+        <td>{{ user.Serviceid }}</td>
+        <td>{{ user.S_Name }}</td>
+        <td>{{ user.Gender }}</td>
+        <td>{{ user.Age }}</td>
+        <td>{{ user.City }}</td>
+        <td>{{ user.Area }}</td>
+        <td>{{ user.State }}</td>
+      </tr>
+    }
+    </tbody>
+  </table>
+   
+  </div>
 
 
 

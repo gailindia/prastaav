@@ -8,6 +8,7 @@ const { isEmpty } = require('rxjs');
 const { default: test } = require('node:test');
 
 const app = express();
+
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cors({origin:true}));
@@ -15,7 +16,7 @@ app.use(cors({origin:true}));
 
 
 
-const hostname = '192.168.1.100';
+const hostname = '192.168.1.104';
 
 const port = process.env.PORT || 4000;;
 
@@ -179,10 +180,11 @@ const con = mysql.createConnection({
   });
  
    //GET API for GROUP
-  app.get('/api/getallservices', (req, res) => {
-    const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup,servicehdr.S_Status FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid ';
+  app.get('/api/getallservices/:Mobile', (req, res) => {
+    const Mobile = req.params.Mobile;
+    const query = 'SELECT servicehdr.Serviceid,servicehdr.Category, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup,servicehdr.S_Status FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid where servicehdr.Mobile = ?';
     // Execute the query
-    con.query(query, (error, results) => {
+    con.query(query,[Mobile], (error, results) => {
       if (error) {
         res.status(500).send(error);
       } else {
@@ -289,7 +291,7 @@ app.post('/api/getSeeAll', async (req, res) => {
   }
 });
 
-  app.post('/api/cartPay', (req,res)=>{
+  app.post('/api/cartPay',  (req,res)=>{
     const {serviceid,Charges_paid } = req.body;
     const query = 'update servicehdr set S_Status = "Paid" , Charges_paid = ? where serviceid = ?';
     con.query(query,[Charges_paid,serviceid],(error,resilts)=>{
@@ -302,20 +304,27 @@ app.post('/api/getSeeAll', async (req, res) => {
     })
   });
 
-
-
-
-
-  app.post('/api/joinService',(req,res)=>{
+  app.post('/api/joinService',async (req,res)=>{
     const{SenderId,ReceiverId,RequestType,Status,Mobile,Category} = req.body;
     const dateTimeObject = new Date(); 
-    query1 = 'select serviceid,category from servicehdr where Mobile = ? and category = ?';
-    con.query(query1,[Mobile,Category],(error,results)=>{
-      if(error){res.status(500).send(error);}
-      else{
-        const senderid = results[0]['ServiceId'];
+    try{
+      const result1 = await new Promise((resolve, reject) => {
+        query1 = 'select Serviceid,Category from servicehdr where Mobile = ? and Category = ?';
+
+       q =  con.query(query1, [Mobile,Category], (error, result1) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(result1);
+            }
+        });
+      });
+
+      console.log("result1  ",result1);
+      console.log("Quesry :: ",Mobile,Category);
+        const senderid = result1[0]['Serviceid'];
         query = 'insert into serviceflow(SenderId,ReceiverId,RequestType,RequestDate,Status) values(?,?,?,?,?)';
-        con.query(query,[SenderId,ReceiverId,RequestType,dateTimeObject,Status],(error,results)=>{
+        con.query(query,[senderid,ReceiverId,RequestType,dateTimeObject,Status],(error,results)=>{
           console.log(res.query);
           if(error){
             res.status(500).send(error);
@@ -323,20 +332,34 @@ app.post('/api/getSeeAll', async (req, res) => {
           else{
             res.json({ message: 'Inserted successfully'});
           }
-        })
-      }
-    })  
+        });
+    
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
   });
 
-  app.get('/api/getJoinRequests',(req,res)=>{
-    query = 'SELECT servicehdr.Serviceid,servicehdr.service, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup, servicehdr.Mobile  FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid INNER JOIN serviceflow ON servicehdr.Serviceid=serviceflow.Senderid where servicehdr.S_Status ="Verified"';
-    con.query(query,(error,results)=>{
+  app.get('/api/getJoinRequests/:Mobile',(req,res)=>{
+	  const Mobile = req.params.Mobile;
+    query = 'SELECT servicehdr.Serviceid,servicehdr.service, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup, servicehdr.Mobile,Serviceflow.SenderId  FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid INNER JOIN serviceflow ON servicehdr.Serviceid=serviceflow.Receiverid where servicehdr.S_Status ="Verified" and servicehdr.Mobile = ?';
+    con.query(query,[Mobile],(error,results)=>{
       console.log(res.query);
       if(error){
         res.status(500).send(error);
       }
       else{
-        res.json(results);
+		  const senderId = results[0]['SenderId'];
+		  query = 'SELECT servicehdr.Category, servicehdr.Serviceid,servicehdr.service, servicehdr.Charges, servicedtl.S_Name,servicedtl.Gender,servicedtl.State,servicedtl.City,servicedtl.Area,servicedtl.Pincode,servicedtl.SpecialNote,servicedtl.DocLink,servicedtl.VideoLink,servicedtl.LocationLink,servicedtl.AnySpecialGroup, servicehdr.Mobile,serviceflow.Receiverid FROM servicehdr INNER JOIN servicedtl ON servicehdr.Serviceid=servicedtl.Serviceid INNER JOIN serviceflow ON servicehdr.Serviceid=serviceflow.Senderid where servicehdr.Serviceid = ?';
+		con.query(query,[senderId],(error,result)=>{
+			if(error){
+				res.status(500).send(error);
+			}
+			else{
+				res.json(result);
+			}
+		})
+		// res.json(results);
       }
     })
   });
@@ -356,6 +379,35 @@ app.post('/api/getSeeAll', async (req, res) => {
       }
     })
   });
+
+  app.post('api/cartStatus',(req,res)=> {
+	  const{RequestType,Status, SenderId, ReceiverId} = req.body;
+	  query = 'update serviceflow SET RequestType = ?, Status =? where SenderId =? and  ReceiverId =?';
+	  con.query(query,[RequestType,Status,SenderId,ReceiverId],(error,results)=> {
+		if(error){
+			res.status(500).send(error);
+		}
+		else{
+			res.json({ message: 'Updated successfully'});
+		}  
+	  })
+  });
+
+  app.post('api/getPopupData',(req,res)=> {
+	  const{Mobile,Category} = req.body;
+    query1 = 'select Serviceid,Category from servicehdr where Mobile = ? and Category = ?';
+	  con.query(query1,[Mobile,Category],(error,results)=> {
+      console.log("results",results);
+		if(error){
+			res.status(500).send(error);
+		}
+		else{
+			res.json({message:"results"});
+		}  
+	  });
+  });
+
+
 //ADMIN APIs
 
 // ADMIN LOGIN API

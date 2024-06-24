@@ -27,6 +27,10 @@ form: any;
     cartList:any;
     joinResuest:any;
 
+    cartAccept: any;
+    cartReject : any;
+    myRequest:any;
+
     constructor(private getServicesCart:LoginService,private router:Router){};
 
     showDialog = false;
@@ -43,6 +47,8 @@ form: any;
     ngOnInit():void {
       this.getCartServices();
       this.getJoinRequests();
+      this.getMyReqData();
+      this.cartAccept = localStorage.getItem("cartAccept")??"Accept";
     }
   
 
@@ -58,7 +64,8 @@ form: any;
     }
 
     getJoinRequests(){
-      this.getServicesCart.getJoinRequests().subscribe({
+      const Mobile = `${localStorage.getItem("MobileNo")}`;
+      this.getServicesCart.getJoinRequests(Mobile).subscribe({
         next:(res)=>{
           this.joinResuest = res;
           console.log(res);
@@ -136,5 +143,40 @@ form: any;
           this.router.navigate([`cart`]);
     }
 
+
+    changeCartStatus(Status:any,SenderId:any,ReceiverId:any){
+      const data = {
+        RequestType : Status,
+        Status:Status,
+        SenderId : SenderId,
+        ReceiverId:ReceiverId
+      };
+      console.log(data);
+      this.getServicesCart.cartStatus(data).subscribe({
+        next:(res) => {
+          if(Status == "Accepted"){
+            localStorage.setItem("cartAccept","Accepted");
+            this.cartAccept = "Accepted";
+          }if(Status == "Rejected"){
+            localStorage.setItem("cartReject","Rejected");
+           
+          }
+          console.log(res);
+          this.reloadCartComponent();
+        },
+        error: (e) => console.error(e)
+      });
+    }
+
+    getMyReqData(){
+      const Mobile = localStorage.getItem('MobileNo');
+      this.getServicesCart.getMyReqData(Mobile).subscribe({
+        next:(res)=>{
+          this.myRequest = res;
+          console.log(res);
+        },
+        error: (e) => console.error(e)
+      });
+    }
 
 }

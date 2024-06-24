@@ -1,18 +1,4 @@
-<!-- <div class="horizontal-scroll-container">
-  <div class="horizontal-list">
-    <div *ngFor="let item of items" class="list-item">
-      <h5 class="card-title">{{ 'item.name' }}</h5>
-      <p class="card-text">Name: {{ 'item' }}</p>
-      <p class="card-text">Gender: {{ item }}</p>
-      <p class="card-text">State: {{ 'state' }}</p>
-      <p class="card-text">City: {{ 'city' }}</p>
-      <p class="card-text">Charges: {{ 'charge' }}</p>
-      <button class="btn btn-success">Edit</button>&nbsp;
-      <button class="btn btn-success">Pay To Verify</button>&nbsp;
-      <button class="btn btn-success">Delete</button>
-    </div>
-  </div>
-</div> -->
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,34 +10,132 @@
     </h2>
    <div class="horizontal-scroll-container">
   <div class="horizontal-list">
-    @for (item of itemsTake; track item.Serviceid; let i = $index) {
-      <li class="list-group-item" style="width: 25rem; margin-bottom: 30px;  float: left; ">
+    @for (user of itemsTake; track user.Serviceid; let i = $index) {
+
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Age</th>
+            <th>Profession</th>
+            <th>
+              Pincode
+            </th>
+            <th>Service</th>
+            <th>Country</th>
+            <th>City</th>
+            <th>Area</th>
+            <th>State</th>
+            <th>SpecialNote</th>
+            <th>DocLink</th>
+            <th>LocationLink</th>
+            <th>AnySpecialGroup</th>
+            <th>Actions</th> 
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Use *ngFor directive to loop through users array -->
+          <tr >
+            <td>{{ user.Serviceid }}</td>
+            <td>{{ user.S_Name }}</td>
+            <td>{{ user.Gender }}</td>
+            <td>{{ user.Age }}</td>
+            <td>{{ user.Profession}}</td>
+            <td>{{ user.Pincode}}</td>
+            <td>{{ user.SpecialNote}}</td>
+            <td>{{ user.City}}</td>
+            <td>{{ user.City}}</td>
+            <td>{{ user.Area}}</td>
+            <td>{{ user.State}}</td>
+            <td>{{ user.SpecialNote}}</td>
+            <td>{{ user.DocLink}}</td>
+            <td>{{ user.LocationLink}}</td>
+            <td>{{ user.AnySpecialGroup}}</td>
+            <td>
+              <!-- Button to reject -->
+              @if(user.Mobile == Mobile){
+ 
+              }
+              @else{
+                @if (user.service=='Marriage') {
+                  <button data-bs-toggle="modal" data-bs-target="#myModal" (click)="getPopUpData(user.Serviceid,user.Category,i)">Propose</button>
+
+                  <!-- @if(user.Type == 'Propose')
+                  {
+                    <div>
+                      <button  *ngIf="user.visibility" >{{user.Type}}</button>
+                     </div>
+                  }@else{
+                    <div>
+                      <button  *ngIf="user.visibility" >{{user.Type}}</button>
+                      <button *ngIf="!user.visibility" >{{user.Type}}</button>
+                     </div>
+                  } -->
+               
+         
+                 }@else {
+                  <div>
+                    <button  *ngIf="user.visibility" id="mobileNum" >{{ user.Mobile }}</button>
+                    <button *ngIf="!user.visibility" (click)="changeText(user.Serviceid,i)">Show Number</button>
+                   </div>
+                 }
+              }
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- <li class="list-group-item" style="width: 25rem; margin-bottom: 30px;  float: left; ">
         <h5 class="card-title">{{ item.Serviceid }}</h5>
         <p class="card-title">Category: {{ item.Category }}</p>
       <p class="card-text">Name: {{ item.S_Name }}</p>
-
       <p class="card-text">Gender: {{ item.Gender }}</p>
       <p class="card-text">State: {{ item.State  }}</p>
       <p class="card-text">City: {{ item.City  }}</p>
       <p class="card-text">Charges: {{ item.Charges  }}</p>
-      <p class="card-text">Charges: {{ item.Mobile  }}</p>
+      <p class="card-text">Charges: {{ item.Mobile  }}</p> -->
        
-       @if (item.service=='Marriage') {
-        <div>
-          <button  *ngIf="item.visibility" >Requested</button>
-          <button *ngIf="!item.visibility" (click)="joinService(item.Serviceid,i)">Join</button>
-         </div>
-
-       }@else {
-        <div>
-          <button  *ngIf="item.visibility" id="mobileNum" >{{ item.Mobile }}</button>
-          <button *ngIf="!item.visibility" (click)="changeText(item.Serviceid,i)">Show Number</button>
-         </div>
-       }
+    
      
-      <!-- <button class="btn btn-success">Pay To Verify</button>&nbsp;
-      <button class="btn btn-success">Delete</button> -->
-      </li>
+    <!-- The Modal -->
+    <div class="modal" id="myModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+    
+          <!-- Modal Header -->
+          <div class="modal-header">
+           
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+    
+          <!-- Modal body -->
+          <div class="horizontal-scroll-container"> 
+            <div class="horizontal-list">
+            <div *ngFor="let popup of popUpData" class="list-item">
+              <h5 class="card-title">{{ popup.Serviceid }}</h5>
+              <p class="card-text">Name: {{ popup.S_Name }}</p>
+              <p class="card-text">Age: {{ popup.Age }}</p>
+              <p class="card-text">Gender: {{ popup.Gender }}</p>
+              <p class="card-text">Category: {{ popup.Category }}</p>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="joinService(user.Serviceid,popup.Serviceid,user.Category)">Join</button>
+        <!-- <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="reloadCartComponent()">Pay Later</button> -->
+      </div>
+            </div>
+            </div>
+             </div>
+    
+      
+    
+        </div>
+      </div>
+    </div>
+
+      <!-- </li> -->
     }
 
   </div>

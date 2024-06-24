@@ -41,4 +41,6 @@ export class Take {
         City?:String;
         Area?:String;
         Pincode?:String;
+        AcceptStatus? :String;
+        RejectStatus?:String;
     }
