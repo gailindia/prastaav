@@ -25,6 +25,7 @@ form: any;
     }
 
     cartList:any;
+    joinResuest:any;
 
     constructor(private getServicesCart:LoginService,private router:Router){};
 
@@ -41,6 +42,7 @@ form: any;
 
     ngOnInit():void {
       this.getCartServices();
+      this.getJoinRequests();
     }
   
 
@@ -50,6 +52,16 @@ form: any;
         next:(res) => {
           console.log('cart service', res);
           this.cartList = res;
+        },
+        error: (e) => console.error(e)
+      });
+    }
+
+    getJoinRequests(){
+      this.getServicesCart.getJoinRequests().subscribe({
+        next:(res)=>{
+          this.joinResuest = res;
+          console.log(res);
         },
         error: (e) => console.error(e)
       });

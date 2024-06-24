@@ -1,3 +1,4 @@
+
 <div class="container">
     <h2>User Table</h2>
     <table class="table table-bordered">
@@ -51,5 +52,64 @@
       </tbody>
     </table>
   </div>
+
+<html>
+  <body>
+    <div class="container">
+      <h2>User Table</h2>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Age</th>
+            <th>Profession</th>
+            <th>
+              Pincode
+            </th>
+            <th>Service</th>
+            <th>Country</th>
+            <th>City</th>
+            <th>Area</th>
+            <th>State</th>
+            <th>SpecialNote</th>
+            <th>DocLink</th>
+            <th>LocationLink</th>
+            <th>AnySpecialGroup</th>
+            <th>Actions</th> 
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Use *ngFor directive to loop through users array -->
+          <tr *ngFor="let user of users">
+            <td>{{ user.Serviceid }}</td>
+            <td>{{ user.S_Name }}</td>
+            <td>{{ user.Gender }}</td>
+            <td>{{ user.Age }}</td>
+            <td>{{ user.Profession}}</td>
+            <td>{{ user.Pincode}}</td>
+            <td>{{ user.SpecialNote}}</td>
+            <td>{{ user.City}}</td>
+            <td>{{ user.City}}</td>
+            <td>{{ user.Area}}</td>
+            <td>{{ user.State}}</td>
+            <td>{{ user.SpecialNote}}</td>
+            <td>{{ user.DocLink}}</td>
+            <td>{{ user.LocationLink}}</td>
+            <td>{{ user.AnySpecialGroup}}</td>
+            <td>
+              <!-- Button to reject -->
+              <button class="btn btn-danger" (click)="rejectUser(user)">Reject</button>
+             
+              <button class="btn btn-success" (click)="payToVerify(user.Serviceid)">Verify</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
+
 
   

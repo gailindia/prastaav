@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Login } from "../models/login.model";
-
 const baseUrl = 'http://prastaav.com/api';
 
 const pincodeUrl = 'https://api.postalpincode.in/pincode';
@@ -86,6 +85,14 @@ export class LoginService{
 
     joinfromSeeAll(serviceid:any):Observable<any>{
         return this.http.post(`${baseUrl}/joinSeeAll`,serviceid);
+    }
+
+    joinServices(data:any):Observable<any>{
+        return this.http.post(`${baseUrl}/joinService`,data);
+    }
+
+    getJoinRequests():Observable<any>{
+        return this.http.get(`${baseUrl}/getJoinRequests`)
     }
 
 }

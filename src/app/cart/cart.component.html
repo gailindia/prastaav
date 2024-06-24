@@ -12,8 +12,12 @@
       <p class="card-text">State: {{ ca.State }}</p>
       <p class="card-text">City: {{ ca.City }}</p>  
       <p class="card-text">Charges: {{ ca.Charges }}</p> 
-      @if (ca.S_Status == "Verified" || ca.S_Status == "Paid") {
-        
+      @if (ca.S_Status == "Verified") {
+        <!-- <div >
+          <button  class="btn btn-success">Accept</button>&nbsp;
+          <button  class="btn btn-success">Reject</button>&nbsp;
+        </div> -->
+
       }@else if(ca.S_Status == "Save"){
         <button  class="btn btn-success" (click)="onClickEditFromCart(ca.Serviceid)">Edit</button>&nbsp;
         <button type = "button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal" >Pay To Verify</button>&nbsp;
@@ -49,6 +53,30 @@
   </ul>
 
 
+  <h2>Requested Items</h2>
+  <ul class="list-group">
+    @for (ca of joinResuest; track ca.Serviceid; let i = $index) {
+    <li class="list-group-item" style="width: 25rem; margin-bottom: 30px;  float: left; ">
+      <h5 class="card-title">{{ ca.Category }}</h5>
+      <p class="card-text">Name : {{ ca.S_Name }}</p>
+      <p class="card-text">Gender: {{ ca.Gender }}</p>
+      <p class="card-text">State: {{ ca.State }}</p>
+      <p class="card-text">City: {{ ca.City }}</p>  
+      <p class="card-text">Charges: {{ ca.Charges }}</p> 
+      <div >
+        <button  class="btn btn-success">Accept</button>&nbsp;
+        <button  class="btn btn-success">Reject</button>&nbsp;
+      </div>
+      @if (ca.S_Status == "Verified" || ca.S_Status == "Save") {
+
+      }@else if(ca.S_Status == "Save"){
+        <!-- <button  class="btn btn-success" (click)="onClickEditFromCart(ca.Serviceid)">Edit</button>&nbsp;
+        <button type = "button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal" >Pay To Verify</button>&nbsp;
+        <button  class="btn btn-success" (click)="onClickOnDelete(ca.Serviceid)">Delete</button> -->
+      }
+    </li>
+  }
+</ul>
 
 
 </div>
